@@ -1,0 +1,58 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+<meta charset="UTF-8">
+<title>納品書作成</title>
+<link rel="stylesheet" th:href="@{/css/style.css}">
+</head>
+<body>
+	<aside class="aside">		
+		<h2 class="aside-title">納品書</h2>
+		<a th:href="@{/index}" class="aside-btn to-top">TOPへ</a>
+		<a th:href="@{/create-delivery-slip}" class="aside-btn">納品書作成</a>
+		<a th:href="@{/delivery-history}" class="aside-btn">納品履歴</a>
+		<a th:href="@{/company}" class="aside-btn">会社情報</a>
+	</aside>
+	<div class="main-content">
+		<header class="header">
+			<h1>納品書作成</h1>
+		</header>
+		<div class="stock-history-serch-container" style="margin-top: 80px; text-align: center;">
+			<div class="form-container harf-container" style="margin-top: 20px; align-items: center;">
+				<form th:action="@{/confirm-create-delivery-slip-next}"  method="POST" id="check">
+					<div style="display: inline-block; width: 100%;">
+						<div class="checkbox-container" >
+							<input type="checkbox" name="deliveryCheck" value="reflectToStock" id="reflectToStock" class="checkbox" checked>							
+						</div>
+						<div class="label-container item-left">
+							<label for="reflectToStock">在庫状況に反映させる</label>																				
+						</div>
+					</div>							
+					<div style="display: inline-block; width: 100%;">
+						<div class="checkbox-container">
+							<input type="checkbox" name="deliveryCheck" value="download" id="download" class="checkbox" checked>
+						</div>
+						<div class="label-container item-left">
+							<label for="download">納品書をダウンロードする</label>																											
+						</div>
+					</div>		
+				</form>
+			</div>					
+			<div class="form-table">
+				<div class="form-btn-container">
+					<p style="margin: 0; padding: 0px; transform: translateY(-20px);">この内容で発行します。よろしいですか？</p>								
+				</div>
+			</div>
+			<div class="form-container">
+				<div class="form-btn-container">				
+					<form th:action="@{/confirm-create-delivery-slip-ret}" method="POST" class="form-item">
+							<input type="hidden" th:object="${deliveryForm}">
+						<input type="submit" value="戻る" class="form-btn  back-btn">
+					</form>
+					<button class="form-btn" form="check">発行</button>
+				</div>
+			</div>
+		</div>
+	</div>
+</body>
+</html>

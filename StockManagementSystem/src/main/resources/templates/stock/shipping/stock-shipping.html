@@ -1,0 +1,240 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+<meta charset="UTF-8">
+<title>在庫管理-出荷</title>
+<link rel="stylesheet" th:href="@{/css/style.css}">
+</head>
+<body>
+	<aside class="aside">		
+		<h1 class="aside-title">在庫管理</h1>
+		<a th:href="@{/index}" class="aside-btn to-top">TOPへ</a>
+		<a th:href="@{/stock-shipping}" class="aside-btn">出荷</a>
+		<a th:href="@{/stock-arrival}" class="aside-btn">入荷</a>
+		<a th:href="@{/regist-category}" class="aside-btn">カテゴリー管理</a>
+		<a th:href="@{/regist-item}" class="aside-btn">商品管理</a>
+		<a th:href="@{/stock-list}" class="aside-btn">在庫一覧</a>
+		<a th:href="@{/stock-history}" class="aside-btn">出納履歴</a>
+	</aside>
+	
+	<div class="main-content">
+		<header class="header">
+			<h1>出荷</h1>
+		</header>
+		
+		<form th:action="@{stock-shipping}" method="POST" th:object="${stockForm}" class="form-container">
+			<div class="table-container">
+				<div class="form-table">
+					<table>
+						<tr>
+							<th class="list-item-5 height-50px">カテゴリー</th>
+							<td class="list-item-4">				
+								<select id="category" th:attr="data-default-category-id=${stockForm.categoryId}" th:field="*{categoryId}">
+									<option th:value="0">---カテゴリーを選択---</option>
+									<option th:each="list : ${categoryList}"
+											th:value="${list.categoryId}"
+											th:text="${list.categoryName}"
+											th:selected="${list.categoryId}==${stockForm.categoryId}">
+									</option>
+								</select>
+							</td>
+							<td class="error-td list-item-2">
+								<p th:if="${#fields.hasErrors('categoryId')}" th:errors="*{categoryId}" class="error-msg"></p>								
+							</td>
+						</tr>
+						<tr>
+							<th class="list-item-5 height-50px">商品</th>
+							<td class="list-item-4">
+								<select id="item" th:field="*{itemId}" th:attr="data-selected-item-id=${stockForm.itemId}">
+									<option th:value="0">---カテゴリーを選択してください---</option>
+								</select>
+							</td>
+							<td class="error-td list-item-2">
+								<p th:if="${#fields.hasErrors('itemId')}" th:errors="*{itemId}" class="error-msg"></p>							
+							</td>
+						</tr>
+						<tr id="size-row" style="display: none;">
+							<th class="list-item-5 height-50px">サイズ</th>
+							<td class="list-item-4">
+								<select id="size" th:field="*{sizeId}" th:attr="data-selected-size-id=${stockForm.sizeId}">
+									<option th:value="0">---商品を選択してください---</option>
+								</select>
+							</td>
+							<td class="list-item-2">
+								<p th:if="${#fields.hasErrors('sizeId')}" th:errors="*{sizeId}" class="error-msg"></p>								
+							</td>
+						</tr>
+						<tr>
+							<th class="list-item-5 height-50px">数量</th>
+							<td class="list-item-4">
+								<input type="number" id="amount" th:field="*{amount}">
+							</td>
+							<td class="list-item-2">
+								<p th:if="${#fields.hasErrors('amount')}" th:errors="*{amount}" class="error-msg"></p>								
+							</td>
+						</tr>
+						<tr>
+							<th class="list-item-5 height-50px">出荷日</th>
+							<td class="list-item-4">
+								<label>
+									<input type="date" th:field="*{registerDate}">									
+								</label>
+							</td>
+							<td class="list-item-2">
+								<p th:if="${#fields.hasErrors('registerDate')}" th:errors="*{registerDate}" class="error-msg"></p>								
+							</td>
+						</tr>
+						<tr>
+							<th class="list-item-5 height-50px">担当者</th>
+							<td class="list-item-4"><input type="text" th:field="*{person}">
+							</td>
+							<td class="list-item-2">
+								<p th:if="${#fields.hasErrors('person')}" th:errors="*{person}" class="error-msg"></p>								
+							</td>
+						</tr>
+						<tr>
+							<th class="list-item-5 height-50px">備考</th>
+							<td class="list-item-4"><input type="text" th:field="*{comment}">
+							</td>
+							<td class="list-item-2">
+								<p th:if="${#fields.hasErrors('comment')}" th:errors="*{comment}" class="error-msg"></p>								
+							</td>
+						</tr>
+					</table>
+				</div>
+				<div>
+					<input type="submit" value="次へ" class="form-btn">				
+				</div>
+			</div>
+		</form>
+	</div>
+	
+	
+	<script>
+		document.addEventListener("DOMContentLoaded",function() {
+			const categorySelect = document.getElementById("category");
+			const itemSelect = document.getElementById("item");
+			const sizeSelect = document.getElementById("size");
+			
+			const defaultCategoryId = categorySelect.value;
+			const defaultItemId = itemSelect.getAttribute("data-selected-item-id");
+			const defaultSizeId = sizeSelect.getAttribute("data-selected-size-id")
+			
+			function loadItems(categoryId, selectedItemId = null) {
+				itemSelect.innerHTML = "";
+				
+				if (categoryId) {
+					const encodedCategoryId = encodeURIComponent(categoryId);
+					fetch(`stock-shipping/by-category?categoryId=${encodedCategoryId}`)
+						.then(response => response.json())
+						.then(data => {
+							const emptyOption = document.createElement("option");
+							emptyOption.value = "0";
+							emptyOption.textContent = "---商品を選択---";
+							itemSelect.appendChild(emptyOption);
+							
+							data.forEach(item => {
+								const option = document.createElement("option");
+								option.value = item.itemId;
+								option.textContent = item.itemName;
+								if (selectedItemId && String(item.itemId) == String(selectedItemId)) {
+									option.selected = true;
+								}
+								itemSelect.appendChild(option);
+							});
+						})
+						.catch(error => {
+							console.error("商品取得中にエラーが発生しました",error);
+						});
+				} else {
+					const option = document.createElement("option");
+					option.value = "";
+					option.textContent = "---カテゴリーを選択してください---";
+					itemSelect.appendChild(option);
+				}
+			}
+			if (defaultCategoryId) {
+				loadItems(defaultCategoryId, defaultItemId);
+			}
+			categorySelect.addEventListener("change", function() {
+				loadItems(this.value);
+			});
+			
+			function loadSize (itemId, selectedSizeId = null) {
+				const sizeRow = document.getElementById("size-row");
+				sizeSelect.innerHTML = "";
+				
+				if (itemId) {
+					const encodedItemId = encodeURIComponent(itemId);
+					fetch(`stock-shipping/by-item?itemId=${encodedItemId}`)
+						.then(response => response.json())
+						.then(data => {
+							sizeSelect.innerHTML = "";
+							
+							if (data.length === 0) {
+								sizeRow.style.display = "none";
+								const option = document.createElement("option");
+								option.value = "0";
+								option.textContent = "---サイズなし---";
+								option.selected = true;
+								sizeSelect.appendChild(option);
+								
+								loadAmount(itemId, 0);
+							} else {
+								sizeRow.style.display = "";
+								const emptyOption = document.createElement("option");
+									emptyOption.value = "0";
+									emptyOption.textContent = "---サイズを選択---";
+									sizeSelect.appendChild(emptyOption);
+									
+									data.forEach(size => {
+										const option = document.createElement("option");
+										option.value = size.sizeId;
+										option.textContent = size.sizeName;
+										if (selectedSizeId && String(size.sizeId) == String(selectedSizeId)) {
+											option.selected = true;
+											loadAmount(itemId, selectedSizeId);
+										}
+										sizeSelect.appendChild(option);
+									});	
+							}
+						})
+						.catch(error => {
+							console.error("サイズ取得中にエラーが発生しました",error);
+						});
+				} else {
+					const option = document.createElement("option");
+					option.value = "";
+					option.textContent = "---商品を選択してください---";
+					sizeSelect.appendChild(option);
+				}
+			}
+			if (defaultItemId && defaultItemId !== "0") {
+				loadSize(defaultItemId, defaultSizeId);
+			}
+			itemSelect.addEventListener("change", function() {
+				loadSize(this.value);
+			});
+			function loadAmount(itemId, sizeId) {
+				if (itemId != null && sizeId != null) {
+					fetch(`stock-shipping/by-size?itemId=${itemId}&sizeId=${sizeId}`)
+					.then(response => response.json())
+					.then(data => {
+						const amountInput = document.getElementById("amount");
+						amountInput.value = data;
+						amountInput.max = data;
+						amountInput.min = 0;
+					})
+					.catch(error => {
+						console.error("数量取得中にエラーが発生しました", error);
+					});
+				}
+			}
+			sizeSelect.addEventListener("change", function() {
+				loadAmount(itemSelect.value, this.value);
+			});
+		});
+	</script>
+	
+</body>
+</html>

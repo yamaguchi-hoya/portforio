@@ -1,0 +1,40 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+<meta charset="UTF-8">
+<title>納品書作成</title>
+<link rel="stylesheet" th:href="@{/css/style.css}">
+</head>
+<body>
+	<aside class="aside">		
+		<h2 class="aside-title">納品書</h2>
+		<a th:href="@{/index}" class="aside-btn to-top">TOPへ</a>
+		<a th:href="@{/create-delivery-slip-step1}" class="aside-btn">納品書作成</a>
+		<a th:href="@{/delivery-history}" class="aside-btn">納品履歴</a>
+		<a th:href="@{/company}" class="aside-btn">会社情報</a>
+	</aside>
+	<div class="main-content">
+		<header class="header">
+			<h1>納品書作成</h1>
+		</header>
+		<div class="stock-history-serch-container">
+			<div class="form-container" style="margin-top: 20px;">
+				<h2>納品書</h2>
+				<iframe src="/pdf/view#toolbar=0&navpanes=0" width="80%" height="420px" style="border: 1px solid #555;"></iframe>
+				<div class="form-container">
+					<div class="form-btn-container">				
+						<form th:action="@{/preview-create-delivery-slip-ret}" method="POST" class="form-item">
+								<input type="hidden" th:object="${deliveryForm}">
+							<input type="submit" value="戻る" class="form-btn  back-btn">
+						</form>
+						<form th:action="@{/preview-create-delivery-slip-next}" method="POST" class="form-item">
+							<input type="hidden" th:object="${deliveryForm}">
+							<input type="submit" value="次へ" class="form-btn">
+						</form>
+					</div>
+				</div>
+			</div>
+		</div>
+	</div>
+</body>
+</html>

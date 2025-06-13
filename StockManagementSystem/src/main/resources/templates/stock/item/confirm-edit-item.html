@@ -1,0 +1,87 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+<meta charset="UTF-8">
+<title>在庫管理-商品登録</title>
+<link rel="stylesheet" th:href="@{/css/style.css}">
+</head>
+<body>
+	<aside class="aside">		
+		<h1 class="aside-title">在庫管理</h1>
+		<a th:href="@{/index}" class="aside-btn to-top">TOPへ</a>
+		<a th:href="@{/stock-shipping}" class="aside-btn">出荷</a>
+		<a th:href="@{/stock-arrival}" class="aside-btn">入荷</a>
+		<a th:href="@{/regist-category}" class="aside-btn">カテゴリー管理</a>
+		<a th:href="@{/regist-item}" class="aside-btn">商品管理</a>
+		<a th:href="@{/stock-list}" class="aside-btn">在庫一覧</a>
+		<a th:href="@{/stock-history}" class="aside-btn">出納履歴</a>
+	</aside>
+	
+	<div class="main-content">
+		<header class="header">
+			<h1>商品管理</h1>
+		</header>
+		<div class="form-container">
+			<h3 class="h3-title">商品編集</h3>	
+			<div class="table-container">
+				<div class="form-table">
+					<table>
+						<thead th:object="${itemForm}">
+							<tr>
+								<th class="list-item-5 height-50px">商品名</th>
+								<td class="list-item-4 item-left-midi"><p th:text="*{itemName}" class="table-p"></p> </td>
+								<td class="error-td list-item-2"></td>
+
+							</tr>		
+							<tr th:object="${itemForm}">
+								<th class="list-item-5 height-50px">商品名</th>
+								<td class="list-item-4 item-left-midi"><p th:text="*{price} + 円" class="table-p"></p> </td>
+								<td class="error-td list-item-2"></td>
+								</tr>						
+						</thead>
+						<tbody>
+							<tr th:each="sizelist : ${sizeList}">
+								<th class="list-item-5 height-50px counter">オプション</th>
+								<td class="list-item-4 item-left-midi"><p th:text="${sizelist.sizeName}" class="table-p"></p> </td>
+								<td class="error-td list-item-2"></td>
+							</tr>							
+						</tbody>
+					</table>				
+				</div>					
+			</div>
+			<p style="margin: 0; padding: 0px; transform: translateY(-20px);">この内容で登録します。よろしいですか？</p>
+			<div class="form-btn-container">				
+				<form th:action="@{/confirm-item-edit-ret}" method="POST" class="form-item">
+					<input type="hidden" th:field="${itemForm.categoryId}">
+					<input type="hidden" th:name="itemId"  th:value="${itemForm.itemId}">
+					<input type="hidden" th:name="itemName"  th:value="${itemForm.itemName}">
+					<input type="hidden" th:name="price"  th:value="${itemForm.price}">
+					<span th:object="${sizeFormWrapper}">
+						<span th:each="sizelist, stat : *{sizeFormList}">
+							<input type="hidden" th:field="*{sizeFormList[__${stat.index}__].sizeId}">
+							<input type="hidden" th:field="*{sizeFormList[__${stat.index}__].sizeName}">
+							<input type="hidden" th:field="*{sizeFormList[__${stat.index}__].itemId}">
+						</span>								
+					</span>
+					<input type="submit" value="戻る" class="form-btn  back-btn">
+				</form>
+				<form th:action="@{/confirm-edit-item}" method="POST" class="form-item" th:object="${sizeFormWrapper}">					
+					<span th:object="${itemForm}">
+						<input type="hidden" th:field="*{itemId}">
+						<input type="hidden" th:field="*{itemName}">
+						<input type="hidden" th:field="*{categoryId}">
+						<input type="hidden" th:field="*{price}">					
+					</span>
+					<span th:each="sizelist, stat : *{sizeFormList}">
+						<input type="hidden" th:field="*{sizeFormList[__${stat.index}__].sizeId}">
+						<input type="hidden" th:field="*{sizeFormList[__${stat.index}__].sizeName}">
+						<input type="hidden" th:field="*{sizeFormList[__${stat.index}__].itemId}">						
+					</span>
+					<input type="submit" value="登録" class="form-btn">
+				</form>
+			</div>				
+		</div>
+	</div>
+
+</body>
+</html>

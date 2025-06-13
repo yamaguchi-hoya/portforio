@@ -1,0 +1,55 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+<meta charset="UTF-8">
+<title>在庫管理-カテゴリー登録</title>
+<link rel="stylesheet" th:href="@{/css/style.css}">
+</head>
+<body>
+	<aside class="aside">		
+		<h1 class="aside-title">在庫管理</h1>
+		<a th:href="@{/index}" class="aside-btn to-top">TOPへ</a>
+		<a th:href="@{/stock-shipping}" class="aside-btn">出荷</a>
+		<a th:href="@{/stock-arrival}" class="aside-btn">入荷</a>
+		<a th:href="@{/regist-category}" class="aside-btn">カテゴリー管理</a>
+		<a th:href="@{/regist-item}" class="aside-btn">商品管理</a>
+		<a th:href="@{/stock-list}" class="aside-btn">在庫一覧</a>
+		<a th:href="@{/stock-history}" class="aside-btn">出納履歴</a>
+	</aside>
+	
+	<div class="main-content">
+		<header class="header">
+			<h1>カテゴリー管理</h1>
+		</header>
+		<div th:object="${categoryForm}" class="form-container">
+			<h3 class="h3-title">カテゴリー編集</h3>	
+			<div class="table-container">
+				<div class="form-table">
+					<table>
+						<tr>
+							<th class="list-item-5 height-50px">カテゴリー名</th>
+							<td class="list-item-4 item-left-midi">
+								<p th:text="*{categoryName}" class="table-p"></p>
+							</td>
+							<td class="error-td list-item-2"></td>
+						</tr >
+					</table>
+				</div>					
+			</div>
+			<div th:object="${categoryForm}" class="form-btn-container">	
+				<form th:action="@{/confirm-category-edit-ret}" method="POST" class="form-item">
+					<input type="hidden" th:field="*{categoryId}">
+					<input type="hidden" th:field="*{categoryName}">
+					<input type="submit" value="戻る" class="form-btn back-btn">
+				</form>
+				<form th:action="@{/confirm-category-edit}" form="edit" method="POST" th:object="${categoryForm}" class="form-item">
+					<input type="hidden" th:field="*{categoryId}">
+					<input type="hidden" th:field="*{categoryName}">
+					<input type="submit" value="登録" class="form-btn">
+				</form>		
+			</div>
+		</div>
+	</div>
+
+</body>
+</html>

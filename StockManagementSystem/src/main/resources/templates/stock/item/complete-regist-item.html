@@ -1,0 +1,31 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+<meta charset="UTF-8">
+<title>在庫管理-商品登録</title>
+<link rel="stylesheet" th:href="@{/css/style.css}">
+</head>
+<body>
+	<aside class="aside">		
+		<h1 class="aside-title">在庫管理</h1>
+		<a th:href="@{/index}" class="aside-btn to-top">TOPへ</a>
+		<a th:href="@{/stock-shipping}" class="aside-btn">出荷</a>
+		<a th:href="@{/stock-arrival}" class="aside-btn">入荷</a>
+		<a th:href="@{/regist-category}" class="aside-btn">カテゴリー管理</a>
+		<a th:href="@{/regist-item}" class="aside-btn">商品管理</a>
+		<a th:href="@{/stock-list}" class="aside-btn">在庫一覧</a>
+		<a th:href="@{/stock-history}" class="aside-btn">出納履歴</a>
+	</aside>
+	
+	<div class="main-content">
+		<header class="header">
+			<h1>商品管理</h1>
+		</header>
+		<div class="complete-window">
+			<p style="margin-top: 200px; padding: 50px;">登録が完了しました。</p>
+			<a th:href="@{regist-item}" class="form-btn  back-btn">戻る</a>
+		</div>
+	</div>
+
+</body>
+</html>

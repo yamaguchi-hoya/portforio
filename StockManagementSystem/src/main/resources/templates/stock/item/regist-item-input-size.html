@@ -1,0 +1,180 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+<meta charset="UTF-8">
+<title>在庫管理-商品登録</title>
+<link rel="stylesheet" th:href="@{/css/style.css}">
+</head>
+<body>
+	<aside class="aside">		
+		<h1 class="aside-title">在庫管理</h1>
+		<a th:href="@{/index}" class="aside-btn to-top">TOPへ</a>
+		<a th:href="@{/stock-shipping}" class="aside-btn">出荷</a>
+		<a th:href="@{/stock-arrival}" class="aside-btn">入荷</a>
+		<a th:href="@{/regist-category}" class="aside-btn">カテゴリー管理</a>
+		<a th:href="@{/regist-item}" class="aside-btn">商品管理</a>
+		<a th:href="@{/stock-list}" class="aside-btn">在庫一覧</a>
+		<a th:href="@{/stock-history}" class="aside-btn">出納履歴</a>
+	</aside>
+	
+	<div class="main-content">
+		<header class="header">
+			<h1>商品管理</h1>
+		</header>
+		<div th:object="${itemForm}" class="form-container">
+			<h3 class="h3-title">新規登録</h3>	
+			<div class="table-container">
+				<div class="form-table">
+					<table>
+						<thead>
+							<tr>
+								<th class="list-item-5 height-50px">カテゴリー</th>
+								<td class="list-item-4 item-left-midi"><p th:each="categorylist : ${categoryList}" th:text="${categorylist.categoryName}" class="table-p"></p></td>
+								<td class="error-td list-item-2"></td>
+							</tr>
+							<tr>
+								<th class="list-item-5 height-50px">商品名</th>
+								<td class="list-item-4 item-left-midi"><p th:text="*{itemName}" class="table-p"></p></td>
+								<td class="error-td list-item-2"></td>
+							</tr>
+							<tr>
+								<th class="list-item-5 height-50px">価格</th>
+								<td class="list-item-4"><input type="text" th:field="*{price}" class="price-item">
+									<p th:if="${#fields.hasErrors('price')}" th:errors="*{price}" class="error-msg"></p>
+								</td>
+								<td class="error-td list-item-2"></td>
+							</tr>
+						</thead>
+						<tbody id="sizeTableBody" >
+							<tr th:each="size : ${sizeList}">
+								<th class="list-item-5 counter counter height-50px"><span class="span-option">オプション</span></th>
+								<td class="list-item-4  item-left-midi">
+									<p th:text="${size}" class="table-p option-item">
+								</td>
+								<td class="list-item-5 ">
+									<div class="form-item option-list-12" >									
+										<button type="button" class="form-btn  form-edit-btn-mini">登録</button>
+										<button type="button" class="form-btn  form-delete-btn-mini">削除</button>
+									</div>
+								</td>
+							</tr>
+							<tr>
+								<th class="list-item-5 counter height-50px"><span class="span-option">オプション</span></th>
+								<td class="list-item-4">
+									<input type="text" name="sizes" class="size-input">
+								</td>
+								<td class="list-item-5 ">
+									<div class="form-item option-list-12" >									
+										<button type="button" class="form-btn  form-edit-btn-mini">登録</button>
+										<button type="button" class="form-btn  form-delete-btn-mini" disabled>削除</button>
+									</div>
+								</td>
+							</tr>
+						</tbody>
+					</table>		
+				</div>
+				<div class="form-btn-container">				
+					<form th:action="@{/regist-item-input-size-ret}" method="POST" th:object="${itemForm}" class="form-item">
+						<input type="hidden" th:field="*{categoryId}">
+						<input type="hidden" th:field="*{itemName}">
+						<input type="submit" value="戻る" class="form-btn back-btn">
+					</form>
+					<form th:action="@{/regist-item-input-size}" method="POST" th:object="${itemForm}" class="form-item" id="next">					
+						<input type="hidden" th:field="*{categoryId}">
+						<input type="hidden" th:field="*{itemName}">
+						<input type="submit" value="次へ" class="form-btn">
+					</form>
+				</div>								
+			</div>	
+		</div>
+	</div>
+	
+	<script>
+		document.addEventListener("DOMContentLoaded", function() {
+			const tableBody = document.getElementById("sizeTableBody");
+			let index = 0;
+			tableBody.addEventListener("click", function(e) {
+				if (e.target.classList.contains("form-edit-btn-mini")) {
+					const row = e.target.closest("tr");
+					const span = row.querySelector(".span-option")
+					const input = row.querySelector(".size-input");
+					const value = input.value.trim();
+					const errorMsg = row.querySelector(".error-msg");
+					
+					if (value === "") {
+						errorMsg.textContent = "入力してください";
+						errorMsg.style.display = "block";
+					} else {
+						const p = document.createElement("p");
+						p.textContent = value;
+						p.className = "table-p option-item";
+						
+						const td = input.parentElement;
+						td.innerHTML = "";
+						td.className = "list-item-4 item-left-midi";
+						td.appendChild(p);
+						
+						e.target.disabled = true;
+						const deleteBtn = row.querySelector(".form-delete-btn-mini");
+							if (deleteBtn) {
+								deleteBtn.disabled = false;
+							}
+						
+						const newRow = document.createElement("tr");
+						newRow.innerHTML = `
+							<th class="list-item-5 counter height-50px">オプション<span class="span-option"></span></th>
+							<td class="list-item-4">
+								<input type="text" name="sizes" class="size-input">
+<!--								<p class="error-msg" style="display: none;"></p>-->
+							</td>
+							<td class="list-item-5 ">
+								<div class="form-item option-list-12" >									
+									<button type="button" class="form-btn form-edit-btn-mini">登録</button>
+									<button type="button" class="form-btn form-delete-btn-mini" disabled>削除</button>
+								</div>
+							</td>
+						`;
+						tableBody.appendChild(newRow);
+						
+					}
+					
+				}
+				if (e.target.classList.contains("form-delete-btn-mini")) {
+					const row = e.target.closest("tr");
+					row.remove();
+				}
+				if (next) {
+					
+				}
+			});
+		});
+		document.getElementById("next").addEventListener("submit",function(e) {
+			const optionElements = document.querySelectorAll(".option-item");
+			const priceElements = document.querySelectorAll(".price-item");
+			const form = this;
+			
+			document.querySelectorAll('input[name="sizes"]').forEach(e => e.remove());
+			
+			optionElements.forEach(p => {
+				const input = document.createElement("input");
+				input.type= "hidden";
+				input.name = "sizes";
+				input.value = p.textContent.trim();
+				form.appendChild(input);
+			});
+			priceElements.forEach(p => {
+				const value = p.value.trim();
+				const price = parseInt(value, 10);
+				if (!isNaN(price)) {				
+						const input = document.createElement("input");
+						input.type= "hidden";
+						input.name = "price";
+						input.value = price;
+						form.appendChild(input);				
+					}
+				}
+			);
+		});
+	</script>
+</body>
+</html>

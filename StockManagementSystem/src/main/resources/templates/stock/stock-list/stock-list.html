@@ -1,0 +1,80 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+<meta charset="UTF-8">
+<title>在庫管理-在庫一覧</title>
+<link rel="stylesheet" th:href="@{/css/style.css}">
+</head>
+<body>
+	<aside class="aside">		
+		<h1 class="aside-title">在庫管理</h1>
+		<a th:href="@{/index}" class="aside-btn to-top">TOPへ</a>
+		<a th:href="@{/stock-shipping}" class="aside-btn">出荷</a>
+		<a th:href="@{/stock-arrival}" class="aside-btn">入荷</a>
+		<a th:href="@{/regist-category}" class="aside-btn">カテゴリー管理</a>
+		<a th:href="@{/regist-item}" class="aside-btn">商品管理</a>
+		<a th:href="@{/stock-list}" class="aside-btn">在庫一覧</a>
+		<a th:href="@{/stock-history}" class="aside-btn">出納履歴</a>
+	</aside>
+	
+	<div class="main-content">
+		<header class="header">
+			<h1>在庫一覧</h1>
+		</header>
+		<div class="form-container">
+			<div class="table-container">
+				<div class="form-table">
+					<form th:action="@{stock-list}" method="POST">
+						<table>
+							<tr th:object="${categoryForm}">
+								<th class="list-item-5 height-50px">カテゴリー</th>
+								<td class="list-item-4">
+									<select th:field="*{categoryId}">
+										<option th:value="0">---カテゴリーを選択---</option>
+										<option th:each="list : ${categoryList}"
+												th:value="${list.categoryId}"
+												th:text="${list.categoryName}"
+												th:selected="${categoryForm.categoryId}==${list.categoryId}"
+												>
+										</option>
+									</select>
+								</td>
+							</tr>
+						</table>
+					</div>
+					<div class="form-btn-container">
+						<div class="form-item">	
+							<input type="submit" class="form-btn" value="検索">
+						</div>		
+					</div>
+					</form>
+				<div class="form-table scroll">
+					<table>
+						<thead>
+							<tr>
+								<th class="list-item history-list-th h-col5"></th>
+								<th class="list-item history-list-th h-col10">カテゴリー</th>
+								<th class="list-item history-list-th h-col10">商品</th>
+								<th class="list-item history-list-th h-col10">サイズ</th>
+								<th class="list-item history-list-th h-col10">数量</th>
+								<th class="list-item history-list-th h-col10">価格</th>
+							</tr>
+						</thead>
+						<tbody th:object="${stockList}">
+							<tr th:each="list :${StockList}">
+								<th class="list-item history-list-td h-col5 counter"></th>
+								<td th:text="${list.categoryName}" class="list-item history-list-td h-col10"></td>
+								<td th:text="${list.ItemName}" class="list-item history-list-td h-col10"></td>
+								<td th:text="${list.sizeName}" class="list-item history-list-td h-col10"></td>
+								<td th:text="${list.amount}" class="list-item history-list-td h-col10"></td>
+								<td th:text="${list.price} + 円" class="list-item history-list-td h-col10"></td>
+							</tr>
+						</tbody>
+					</table>
+				</div>
+			</div>
+		</div>
+	</div>
+
+</body>
+</html>

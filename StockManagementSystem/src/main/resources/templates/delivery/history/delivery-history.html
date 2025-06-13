@@ -1,0 +1,100 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+<meta charset="UTF-8">
+<title>納品書作成</title>
+<link rel="stylesheet" th:href="@{/css/style.css}">
+</head>
+<body>
+	<aside class="aside">		
+		<h2 class="aside-title">納品書</h2>
+		<a th:href="@{/index}" class="aside-btn to-top">TOPへ</a>
+		<a th:href="@{/create-delivery-slip-step1}" class="aside-btn">納品書作成</a>
+		<a th:href="@{/delivery-history}" class="aside-btn">納品履歴</a>
+		<a th:href="@{/company}" class="aside-btn">会社情報</a>
+	</aside>
+	<div class="main-content">
+		<header class="header">
+			<h1>納品履歴
+			</h1>
+		</header>
+		<div class="stock-history-serch-container">
+			<div class="form-container" style="margin-top: 20px;">
+				<div class="table-container-history item-left history-serch">
+					<form th:action="@{/delivery-history-serch}" method="POST" th:object="${historyForm}">
+						<div class="harf-container">
+							<div>
+								<div class="history-serch-name">
+								納品先
+								</div>
+								<div class="history-serch-input">
+									<input type="text" class="select-2" th:field="*{destination}">
+								</div>
+							</div>
+						</div>
+						<div class="harf-container">
+							<div>
+								<div class="history-serch-name">
+									期間(以降)							
+								</div>
+								<div class="history-serch-input">
+									<input type="date" id="start-date" class="select-2" th:field="*{startDate}">
+								</div>
+							</div>
+							<div>
+								<div class="history-serch-name">
+									期間(以前)							
+								</div>
+								<div class="history-serch-input">
+									<input type="date" id="end-date" class="select-2" th:field="*{endDate}">
+								</div>
+							</div>
+							<div>
+								<div class="history-serch-input">
+									　
+								</div>
+							</div>
+							<div class="history-serch-btn-container">
+								<input type="submit" class="form-btn-small" value="絞り込む" style="width: 150px;">
+					</form>
+							<form th:action="@{/delivery-history}" method="GET">
+								<input type="submit" value="条件のリセット" class="form-btn-small back-btn" style="width: 150px;">		
+							</form>			
+							</div>
+						</div>
+					</div>
+				</div>
+			</div>
+			<div class="form-container">
+				<div class="table-container-history scroll">
+					<div class="form-table">
+						<table>
+							<thead>
+								<tr>
+									<th class="list-item history-list-th h-col5"></th>
+									<th class="list-item history-list-th h-col10">日時</th>
+									<th class="list-item history-list-th h-col10">納品先</th>
+									<th class="list-item history-list-th h-col10">納品書</th>
+								</tr>
+							</thead>
+							<tbody th:object="${historyList}">
+								<tr th:each="list :${historyList}">
+									<th class="list-item history-list-td h-col5 counter"></th>
+									<td th:text="${list.deliveryDate}" class="list-item history-list-td h-col10"></td>
+									<td th:text="${list.destination}" class="list-item history-list-td h-col10"></td>
+									<td class="list-item history-list-td h-col10">
+										<form th:action="@{delivery-history-view}" method="POST">
+											<input type="hidden" name="deliverySlipId" th:value="${list.deliverySlipId}">
+											<input type="submit" value="表示" class="form-btn-small">
+										</form>
+									</td>
+								</tr>
+							</tbody>
+						</table>
+					</div>
+				</div>
+			</div>
+		</div>
+	</div>
+</body>
+</html>

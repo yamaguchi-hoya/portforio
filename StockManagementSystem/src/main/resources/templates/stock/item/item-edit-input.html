@@ -1,0 +1,98 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+<meta charset="UTF-8">
+<title>在庫管理-商品登録</title>
+<link rel="stylesheet" th:href="@{/css/style.css}">
+</head>
+<body>
+	<aside class="aside">		
+		<h1 class="aside-title">在庫管理</h1>
+		<a th:href="@{/index}" class="aside-btn to-top">TOPへ</a>
+		<a th:href="@{/stock-shipping}" class="aside-btn">出荷</a>
+		<a th:href="@{/stock-arrival}" class="aside-btn">入荷</a>
+		<a th:href="@{/regist-category}" class="aside-btn">カテゴリー管理</a>
+		<a th:href="@{/regist-item}" class="aside-btn">商品管理</a>
+		<a th:href="@{/stock-list}" class="aside-btn">在庫一覧</a>
+		<a th:href="@{/stock-history}" class="aside-btn">出納履歴</a>
+	</aside>
+	
+	<div class="main-content">
+		<header class="header">
+			<h1>商品編集</h1>
+		</header>
+		<div class="form-container">
+			<form th:action="@{item-edit-input}" method="POST" id="editForm">
+			<h3 class="h3-title">商品編集</h3>	
+				<div class="table-container">
+					<div class="form-table">
+						<table>
+							<thead>
+								<tr th:object="${itemForm}" >
+									<th class="list-item-5 height-50px">商品名</th>
+									<td class="list-item-4"><input type="text" th:field="*{itemName}" id="itemInput">
+										<input type="hidden" th:field="*{itemId}">
+										<input type="hidden" th:field="*{categoryId}">
+									</td>
+									<td class="error-td list-item-2">
+										<p th:if="${#fields.hasErrors('itemName')}" th:errors="*{itemName}" class="error-msg"></p>									
+									</td>
+	
+								</tr>		
+								<tr th:object="${itemForm}" >
+									<th class="list-item-5 height-50px">価格</th>
+									<td class="list-item-4"><input type="text" th:field="*{price}" id="priceInput">
+									</td>
+									<td class="error-td list-item-2">
+										<p th:if="${#fields.hasErrors('price')}" th:errors="*{price}" class="error-msg"></p>									
+									</td>
+	
+								</tr>							
+							</thead>
+							<tbody th:object="${sizeFormWrapper}">
+								<tr th:each="sizelist, stat : *{sizeFormList}">
+									<th class="list-item-5 height-50px">オプション</th>
+									<td class="list-item-4"><input type="hidden" th:field="*{sizeFormList[__${stat.index}__].sizeId}">
+										<input type="text" th:field="*{sizeFormList[__${stat.index}__].sizeName}">
+										<input type="hidden" th:field="*{sizeFormList[__${stat.index}__].itemId}">
+									</td>
+									<td class="error-td list-item-2">
+										<p th:if="${#fields.hasErrors('sizeFormList[' + stat.index + '].sizeName')}" 
+											th:errors="*{sizeFormList[__${stat.index}__].sizeName}" class="error-msg">
+										</p>									
+									</td>
+								</tr>						
+							</tbody>
+						</table>
+					</div>					
+				</div>
+			</form>
+			<div class="form-btn-container">	
+				<form th:action="@{/regist-item}" method="GET" class="form-item">
+					<input type="submit" value="戻る" class="form-btn back-btn">
+				</form>
+				<div class="form-item">
+					<button type="button" class="form-btn" onclick="submitEditForm()">次へ</button>				
+				</div>
+			</div>			
+		</div>
+	</div>
+	
+	<script>
+		function submitItemName() {
+			const inputItem = document.getElementById("itemInput");
+			const hiddenItem = document.getElementById("itemHidden");
+			const inputPrice = document.getElementById("priceInput");
+			const hiddenPrice = document.getElementById("priceHidden");
+			const inputSize = document.getElementById("sizeInput");
+			const hiddenSize = document.getElementById("sizeHidden");
+			hiddenItem.value = inputItem.value;
+			hiddenPrice.value = inputPrice.value;
+			hiddenSize.value = inputSize.value;
+		}
+		function submitEditForm() {
+			document.getElementById("editForm").submit();
+		}
+	</script>
+</body>
+</html>
