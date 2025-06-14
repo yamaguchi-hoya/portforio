@@ -20,7 +20,7 @@ javascript
 出荷登録 ![Image](https://github.com/user-attachments/assets/9fb3c545-c44b-4e12-b351-d730df45d4fa)  | 入荷登録 ![Image](https://github.com/user-attachments/assets/f5e9662d-4010-47a7-b976-f5268ca3ad53)
 :---: | :---:
 カテゴリ管理 ![Image](https://github.com/user-attachments/assets/9f59a674-68f2-4382-b1d5-f47b96192bf7)　| 商品管理　![Image](https://github.com/user-attachments/assets/1aa1126a-a000-4528-8fbc-1d937310b66f)
-在庫一覧　![Image](https://github.com/user-attachments/assets/1bf8f357-ae11-4b0e-a13d-8f55362df5a7) | 出納履歴　![Image](https://github.com/user-attachments/assets/ab2611b5-286d-438c-8b06-a1ee615467bc)
+在庫一覧　![Image](https://github.com/user-attachments/assets/f0ab1e70-5c9b-4f9b-aff3-39bf9e8d24a3) | 出納履歴　![Image](https://github.com/user-attachments/assets/5f59d839-66a9-4641-b567-926dcae1c944)
 #### ・納品書管理  
 納品書作成 ![Image](https://github.com/user-attachments/assets/0063004a-9c05-4baf-951d-12cf21d2d821) | 納品履歴 ![Image](https://github.com/user-attachments/assets/9299736e-bb52-4ed0-96ad-7273b7f1c90b)
 :---: | :---:
