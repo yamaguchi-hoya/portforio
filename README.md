@@ -30,3 +30,4 @@ javascript
 ## ER図
 ![Image](https://github.com/user-attachments/assets/1f363df3-e349-4398-9f33-49b3dfdd6683)
 ## 画面遷移図
+![Image](https://github.com/user-attachments/assets/fe6018e3-8bfa-4aa2-b426-237ded477fd7)
