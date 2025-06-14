@@ -28,5 +28,5 @@ javascript
 ・納品履歴  
 ・会社情報登録  
 ## ER図
-!
+![Image](https://github.com/user-attachments/assets/1f363df3-e349-4398-9f33-49b3dfdd6683)
 ## 画面遷移図
