@@ -1,258 +1,209 @@
 <!DOCTYPE html>
-<html xmlns:th="http://www.thymeleaf.org">
+<html xmlns:th="http://www.thymeleaf.org" lang="ja">
 <head>
-<meta charset="UTF-8">
-<title>在庫管理-出納履歴</title>
-<link rel="stylesheet" th:href="@{/css/style.css}">
+  <meta charset="UTF-8">
+  <title>在庫管理 - 出納履歴</title>
+  <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet">
+  <link rel="stylesheet" th:href="@{/css/style2.css}">
+  <style>
+    .scroll-table {
+      max-height: 400px;
+      overflow-y: auto;
+    }
+  </style>
 </head>
 <body>
-	<aside class="aside">		
-		<h1 class="aside-title">在庫管理</h1>
-		<a th:href="@{/index}" class="aside-btn to-top">TOPへ</a>
-		<a th:href="@{/stock-shipping}" class="aside-btn">出荷</a>
-		<a th:href="@{/stock-arrival}" class="aside-btn">入荷</a>
-		<a th:href="@{/regist-category}" class="aside-btn">カテゴリー管理</a>
-		<a th:href="@{/regist-item}" class="aside-btn">商品管理</a>
-		<a th:href="@{/stock-list}" class="aside-btn">在庫一覧</a>
-		<a th:href="@{/stock-history}" class="aside-btn">出納履歴</a>
-	</aside>
-	
-	<div class="main-content">
-		<header class="header">
-			<h1>出納履歴</h1>
-		</header>
-		<div class="stock-history-serch-container">
-			<div class="form-container" style="margin-top: 20px;">
-				<div class="table-container-history item-left history-serch">
-					<form th:action="@{/stock-history-conditions}" method="POST" th:object="${historyForm}">
-						<div class="harf-container">
-							<div>
-								<div class="history-serch-name">
-									操作							
-								</div>
-								<div class="history-serch-input">
-									<div class="label-box" id="execute">
-										<input type="radio" id="all-conditions" name="execute" value="all" class="radio-btn" 
-										 	   th:checked="${historyForm.execute} == 'all' or historyForm.execute == null">
-										<label for="all-conditions" class="label execute-label">すべて</label>										
-										<input type="radio" id="shipping" name="execute" value="出荷" class="radio-btn"
-											   th:checked="${historyForm.execute} == '出荷'">
-										<label for="shipping" class="label execute-label">出荷</label>
-										<input type="radio" id="arrival" name="execute" value="入荷" class="radio-btn"
-											   th:checked="${historyForm.execute} == '入荷'">
-										<label for="arrival" class="label execute-label">入荷</label>														
-									</div>
-								</div>
-							</div>
-							<div>
-								<div class="history-serch-name">
-								カテゴリー
-								</div>
-								<div class="history-serch-input">
-								<select class="select-2" id="category" th:field="*{categoryId}" th:attr="data-default-catgeory-id=${historyForm.categoryId}">
-									<option th:value="0">---未選択---</option>
-									<option th:each="list : ${categoryList}"
-											th:value="${list.categoryId}"
-											th:text="${list.categoryName}"
-											th:selected="${list.categoryId}==${historyForm.categoryId}">
-									</option>
-								</select>
-								</div>
-							</div>
-							<div>
-								<div class="history-serch-name">
-								商品
-								</div>
-								<div class="history-serch-input">
-								<select class="select-2" th:attr="data-selected-item-id=${historyForm.itemId}" id="item" th:field="*{itemId}">
-									<option th:value="0">---未選択---</option>
-								</select>
-								</div>
-							</div>
-							<div>
-								<div class="history-serch-name">
-								サイズ
-								</div>
-								<div class="history-serch-input">
-								<select class="select-2" th:attr="data-selected-size-id=${historyForm.sizeId}" id="size" th:field="*{sizeId}">
-									<option th:value="0">---未選択---</option>
-								</select>
-								</div>
-							</div>
-						</div>
-						<div class="harf-container">
-							<div>
-								<div class="history-serch-name">
-									期間(以降)							
-								</div>
-								<div class="history-serch-input">
-									<input type="date" id="start-date" class="select-2" th:field="*{startDate}">
-								</div>
-							</div>
-							<div>
-								<div class="history-serch-name">
-									期間(以前)							
-								</div>
-								<div class="history-serch-input">
-									<input type="date" id="end-date" class="select-2" th:field="*{endDate}">
-								</div>
-							</div>
-							<div>
-								<div class="history-serch-input">
-									　
-								</div>
-							</div>
-							<div class="history-serch-btn-container">
-								<input type="submit" class="form-btn-small" value="絞り込む" style="width: 150px;">
-					</form>
-							<form th:action="@{/stock-history}" method="GET">
-								<input type="submit" value="条件のリセット" class="form-btn-small back-btn" style="width: 150px;">					
-							</div>
-						</div>
-					</div>
-				</div>
-			</div>
-			<div class="form-container">
-				<div class="table-container-history scroll">
-					<div class="form-table">
-						<table>
-							<thead>
-								<tr>
-									<th class="list-item history-list-th h-col5"></th>
-									<th class="list-item history-list-th h-col10">日時</th>
-									<th class="list-item history-list-th h-col5">操作</th>
-									<th class="list-item history-list-th h-col10">カテゴリー</th>
-									<th class="list-item history-list-th h-col10">商品</th>
-									<th class="list-item history-list-th h-col5">サイズ</th>
-									<th class="list-item history-list-th h-col5">数量</th>
-									<th class="list-item history-list-th h-col10">担当者</th>
-									<th class="list-item history-list-th h-col15">備考</th>
-								</tr>
-							</thead>
-							<tbody th:object="${historyList}">
-								<tr th:each="list :${historyList}">
-									<th class="list-item history-list-td h-col5 counter"></th>
-									<td th:text="${list.registerDate}" class="list-item history-list-td h-col10"></td>
-									<td th:text="${list.execute}" class="list-item history-list-td h-col5"></td>
-									<td th:text="${list.categoryName}" class="list-item history-list-td h-col10"></td>
-									<td th:text="${list.itemName}" class="list-item history-list-td h-col10"></td>
-									<td th:text="${list.sizeName}" class="list-item history-list-td h-col5"></td>
-									<td th:text="${list.amount}" class="list-item history-list-td h-col5"></td>
-									<td th:text="${list.person}" class="list-item history-list-td h-col10"></td>
-									<td th:text="${list.comment}" class="list-item history-list-td h-col15"></td>
-								</tr>
-							</tbody>
-						</table>
-					</div>
-				</div>
-			</div>
-		</div>
+
+  <aside>
+    <h1>在庫管理</h1>
+    <a th:href="@{/index}" class="aside-btn">TOPへ</a>
+    <a th:href="@{/stock-shipping}" class="aside-btn">出荷</a>
+    <a th:href="@{/stock-arrival}" class="aside-btn">入荷</a>
+    <a th:href="@{/regist-category}" class="aside-btn">カテゴリー管理</a>
+    <a th:href="@{/regist-item}" class="aside-btn">商品管理</a>
+    <a th:href="@{/stock-list}" class="aside-btn">在庫一覧</a>
+    <a th:href="@{/stock-history}" class="aside-btn">出納履歴</a>
+  </aside>
+
+  <div class="main-content">
+    <header class="mb-4">
+      <h1>出納履歴</h1>
+    </header>
+
+    <!-- 検索フォーム -->
+    <div class="form-wrapper mb-4">
+		<form th:action="@{/stock-history-conditions}" method="POST" th:object="${historyForm}" class="container">
+		  <div class="row g-3 mb-3">
+		    <div class="col-md-4">
+		      <label for="category" class="form-label">カテゴリー</label>
+		      <select id="category" class="form-select" th:field="*{categoryId}">
+		        <option th:value="0">---未選択---</option>
+		        <option th:each="list : ${categoryList}"
+		                th:value="${list.categoryId}"
+		                th:text="${list.categoryName}">
+		        </option>
+		      </select>
+		    </div>
+		    <div class="col-md-4">
+		      <label for="item" class="form-label">商品</label>
+		      <select id="item" class="form-select" th:field="*{itemId}" th:attr="data-selected-item-id=${historyForm.itemId}">
+		        <option th:value="0">---未選択---</option>
+		      </select>
+		    </div>
+		    <div class="col-md-4">
+		      <label for="size" class="form-label">サイズ</label>
+		      <select id="size" class="form-select" th:field="*{sizeId}" th:attr="data-selected-size-id=${historyForm.sizeId}">
+		        <option th:value="0">---未選択---</option>
+		      </select>
+		    </div>
+		  </div>
+
+		  <div class="row g-3 mb-3">
+		    <div class="col-md-4">
+		      <label for="start-date" class="form-label">期間(以降)</label>
+		      <input type="date" id="start-date" class="form-control" th:field="*{startDate}">
+		    </div>
+		    <div class="col-md-4">
+		      <label for="end-date" class="form-label">期間(以前)</label>
+		      <input type="date" id="end-date" class="form-control" th:field="*{endDate}">
+		    </div>
+		    <div class="col-md-4">
+		      <label class="form-label d-block">操作</label>
+		      <div class="form-check form-check-inline">
+		        <input class="form-check-input" type="radio" id="all" name="execute" value="all"
+		               th:checked="${historyForm.execute} == 'all' or historyForm.execute == null">
+		        <label class="form-check-label" for="all">すべて</label>
+		      </div>
+		      <div class="form-check form-check-inline">
+		        <input class="form-check-input" type="radio" id="arrival" name="execute" value="入荷"
+		               th:checked="${historyForm.execute} == '入荷'">
+		        <label class="form-check-label" for="arrival">入荷</label>
+		      </div>
+		      <div class="form-check form-check-inline">
+		        <input class="form-check-input" type="radio" id="shipping" name="execute" value="出荷"
+		               th:checked="${historyForm.execute} == '出荷'">
+		        <label class="form-check-label" for="shipping">出荷</label>
+		      </div>
+		    </div>
+		  </div>
+
+        <div class="form-btn-container">
+		    <div class="col">
+		      <button type="submit" class="btn btn-primary me-2 form-btn">絞り込む</button>
+		      <a th:href="@{/stock-history}" class="btn btn-secondary form-btn">条件のリセット</a>
+		    </div>
+		  </div>
+		</form>
+    </div>
+
+    <!-- 結果表示 -->
+	    <div class="table-responsive scroll-table" style="width: 80%;">
+	      <table class="table table-bordered table-sm text-center">
+	        <thead class="table-light">
+	          <tr>
+	            <th ></th >
+	            <th>日時</th>
+	            <th>操作</th>
+	            <th>カテゴリー</th>
+	            <th>商品</th>
+	            <th>サイズ</th>
+	            <th>数量</th>
+	            <th>担当者</th>
+	            <th>備考</th>
+	          </tr>
+	        </thead>
+	        <tbody>
+	          <tr th:each="list, stat : ${historyList}">
+	            <td th:text="${stat.index + 1}"></td>
+	            <td th:text="${list.registerDate}"></td>
+	            <td th:text="${list.execute}"></td>
+	            <td th:text="${list.categoryName}"></td>
+	            <td th:text="${list.itemName}"></td>
+	            <td th:text="${list.sizeName}"></td>
+	            <td th:text="${list.amount}"></td>
+	            <td th:text="${list.person}"></td>
+	            <td th:text="${list.comment}"></td>
+	          </tr>
+	        </tbody>
+	      </table>
+	    </div>
+	  </div>
 	</div>
-		<script>
-			document.addEventListener("DOMContentLoaded",function() {
-				const categorySelect = document.getElementById("category");
-				const itemSelect = document.getElementById("item");
-				const sizeSelect = document.getElementById("size");
-				const executeSelect = document.getElementById("execute");
-				
-				const defaultCategoryId = categorySelect.value;
-				const defaultItemId = itemSelect.getAttribute("data-selected-item-id");
-				const defaultSizeId = sizeSelect.getAttribute("data-selected-size-id")
-				const defaultExecute = executeSelect.value;
-				
-				
-				function loadItems(categoryId, selectedItemId = null) {
-					itemSelect.innerHTML = "";
-					
-					if (categoryId) {
-						const encodedCategoryId = encodeURIComponent(categoryId);
-						fetch(`stock-history/by-category?categoryId=${encodedCategoryId}`)
-							.then(response => response.json())
-							.then(data => {
-								const emptyOption = document.createElement("option");
-								emptyOption.value = "0";
-								emptyOption.textContent = "---未選択---";
-								itemSelect.appendChild(emptyOption);
-								
-								data.forEach(item => {
-									const option = document.createElement("option");
-									option.value = item.itemId;
-									option.textContent = item.itemName;
-									if (selectedItemId && String(item.itemId) == String(selectedItemId)) {
-										option.selected = true;
-									}
-									itemSelect.appendChild(option);
-								});
-							})
-							.catch(error => {
-								console.error("商品取得中にエラーが発生しました",error);
-							});
-					} else {
-						const option = document.createElement("option");
-						option.value = "";
-						option.textContent = "--カテゴリーを選択してください--";
-						itemSelect.appendChild(option);
-					}
-				}
-				if (defaultCategoryId) {
-					loadItems(defaultCategoryId, defaultItemId);
-				}
-				categorySelect.addEventListener("change", function() {
-					loadItems(this.value);
-				});
-				
-				function loadSize (itemId, selectedSizeId = null) {
-					const sizeRow = document.getElementById("size-row");
-					sizeSelect.innerHTML = "";
-					
-					if (itemId) {
-						const encodedItemId = encodeURIComponent(itemId);
-						fetch(`stock-history/by-item?itemId=${encodedItemId}`)
-							.then(response => response.json())
-							.then(data => {
-								if (data.length === 0) {
-									sizeSelect.innerHTML = "";
-									const option = document.createElement("option");
-									option.value = "0";
-									option.textContent = "---サイズなし---";
-									option.selected = true;
-									sizeSelect.appendChild(option);
-									
-									loadAmount(itemId, 0);
-								} else {
-									const emptyOption = document.createElement("option");
-										emptyOption.value = "0";
-										emptyOption.textContent = "---未選択---";
-										sizeSelect.appendChild(emptyOption);
-										
-										data.forEach(size => {
-											const option = document.createElement("option");
-											option.value = size.sizeId;
-											option.textContent = size.sizeName;
-											if (selectedSizeId != null && selectedSizeId != "0" && String(size.sizeId) == String(selectedSizeId)) {
-												option.selected = true;
-											}
-											sizeSelect.appendChild(option);
-										});	
-								}
-							})
-							.catch(error => {
-								console.error("サイズ取得中にエラーが発生しました",error);
-							});
-					} else {
-						const option = document.createElement("option");
-						option.value = "";
-						option.textContent = "--商品を選択してください--";
-						sizeSelect.appendChild(option);
-					}
-				}
-				if (defaultItemId && defaultItemId !== "0") {
-					loadSize(defaultItemId, defaultSizeId);
-				}
-				itemSelect.addEventListener("change", function() {
-					loadSize(this.value);
-				});
-			});
-		</script>
+
+  <script>
+    document.addEventListener("DOMContentLoaded", function () {
+      const categorySelect = document.getElementById("category");
+      const itemSelect = document.getElementById("item");
+      const sizeSelect = document.getElementById("size");
+
+      const defaultCategoryId = categorySelect.value;
+      const defaultItemId = itemSelect.getAttribute("data-selected-item-id");
+      const defaultSizeId = sizeSelect.getAttribute("data-selected-size-id");
+
+      function loadItems(categoryId, selectedItemId = null) {
+        itemSelect.innerHTML = "";
+        if (categoryId) {
+          fetch(`stock-history/by-category?categoryId=${encodeURIComponent(categoryId)}`)
+            .then(response => response.json())
+            .then(data => {
+              const emptyOption = document.createElement("option");
+              emptyOption.value = "0";
+              emptyOption.textContent = "---未選択---";
+              itemSelect.appendChild(emptyOption);
+
+              data.forEach(item => {
+                const option = document.createElement("option");
+                option.value = item.itemId;
+                option.textContent = item.itemName;
+                if (selectedItemId && String(item.itemId) === String(selectedItemId)) {
+                  option.selected = true;
+                }
+                itemSelect.appendChild(option);
+              });
+            });
+        }
+      }
+
+      function loadSizes(itemId, selectedSizeId = null) {
+        sizeSelect.innerHTML = "";
+        if (itemId) {
+          fetch(`stock-history/by-item?itemId=${encodeURIComponent(itemId)}`)
+            .then(response => response.json())
+            .then(data => {
+              const emptyOption = document.createElement("option");
+              emptyOption.value = "0";
+              emptyOption.textContent = "---未選択---";
+              sizeSelect.appendChild(emptyOption);
+
+              data.forEach(size => {
+                const option = document.createElement("option");
+                option.value = size.sizeId;
+                option.textContent = size.sizeName;
+                if (selectedSizeId && String(size.sizeId) === String(selectedSizeId)) {
+                  option.selected = true;
+                }
+                sizeSelect.appendChild(option);
+              });
+            });
+        }
+      }
+
+      if (defaultCategoryId) {
+        loadItems(defaultCategoryId, defaultItemId);
+      }
+
+      if (defaultItemId && defaultItemId !== "0") {
+        loadSizes(defaultItemId, defaultSizeId);
+      }
+
+      categorySelect.addEventListener("change", function () {
+        loadItems(this.value);
+      });
+
+      itemSelect.addEventListener("change", function () {
+        loadSizes(this.value);
+      });
+    });
+  </script>
 </body>
 </html>
