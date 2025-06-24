@@ -1,0 +1,88 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org" lang="ja">
+<head>
+  <meta charset="UTF-8">
+  <title>在庫管理システム</title>
+  <!-- Bootstrap 5 -->
+  <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet">
+  <!-- 共通CSS -->
+  <link rel="stylesheet" th:href="@{/css/style2.css}">
+  <style>
+    body {
+      background-color: rgb(21, 33, 62);
+      color: #ffffff;
+      font-family: 'Segoe UI', 'Helvetica Neue', sans-serif;
+      margin: 0;
+      height: 100vh;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+    }
+
+    .main-container {
+      background: rgb(17, 41, 64);
+      border-radius: 20px;
+      box-shadow: 0 8px 30px rgba(0, 0, 0, 0.3);
+      width: 90%;
+      max-width: 500px;
+      height: 400px;
+      display: flex;
+      flex-direction: column;
+      justify-content: center;
+      align-items: center;
+      padding: 2rem;
+      text-align: center;
+    }
+
+    .main-container h1 {
+      font-size: 2rem;
+      margin-bottom: 2.5rem;
+      font-weight: 600;
+      color: #f8fafc;
+    }
+
+    .btn-modern {
+      width: 100%;
+      max-width: 300px;
+      margin-bottom: 1.2rem;
+      padding: 0.9rem;
+      font-size: 1.2rem;
+      border: none;
+	  text-decoration: none;
+      border-radius: 8px;
+      transition: all 0.3s ease;
+      box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15);
+    }
+
+    .btn-stock {
+      background: rgb(255, 128, 0);
+      color: #fff;
+    }
+
+    .btn-stock:hover {
+      background: rgb(255, 180, 104);
+      color: #fff;
+    }
+
+    .btn-delivery {
+      background: 	rgb(255, 128, 0) ;
+      color: #fff;
+    }
+
+    .btn-delivery:hover {
+      background: 	rgb(255, 180, 104);
+      color: #fff;
+    }
+  </style>
+</head>
+<body>
+  <div class="main-container">
+    <h1>在庫管理システム太郎</h1>
+    <a th:href="@{/stock-top}" class="btn-modern btn-stock">在庫管理</a>
+    <a th:href="@{/delivery-top}" class="btn-modern btn-delivery">納品書</a>
+  </div>
+
+  <!-- Bootstrap JS (Optional) -->
+  <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"></script>
+</body>
+</html>
