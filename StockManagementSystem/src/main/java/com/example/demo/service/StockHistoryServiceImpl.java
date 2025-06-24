@@ -97,5 +97,52 @@ public class StockHistoryServiceImpl implements StockHistoryService {
 		
 	}
 
+	@Override
+	public List<HistoryDto> getSearchMonthly(LocalDate nowDate) {
+		if (nowDate == null) {
+			nowDate = LocalDate.now();
+		}
+		LocalDate startDate = nowDate.withDayOfMonth(1);
+		LocalDate endDate = nowDate.withDayOfMonth(nowDate.lengthOfMonth());
+		System.out.println(startDate);
+		System.out.println(endDate);
+		try {
+			Specification<StockEntity> stockSpec = stockSpecifications.withFetchJoins();
+			List<StockEntity> stockList = stockSearchRepository.findAll(stockSpec);
+			List<Integer> stockIdList = new ArrayList<>();
+			for (StockEntity entity : stockList) {
+				stockIdList.add(entity.getStock_id());
+			}
+			
+			Specification<HistoryFormEntity> recordSpec = stockRecordSpecifications.withFetchJoins()
+			.and(stockRecordSpecifications.hasStockId(stockIdList));
+			recordSpec = recordSpec.and(stockRecordSpecifications.betweenDate(startDate, endDate));
+			List<HistoryFormEntity> recordList = stockHistorySearchRepository.findAll(recordSpec);
+			List<HistoryDto> historyList = new ArrayList<>();
+			for ( HistoryFormEntity list : recordList) {
+				StockEntity stock = list.getStock();
+				if (stock.getSize() == null) {
+					SizeFormEntity dummySize = new SizeFormEntity();
+					dummySize.setSizeName("-");
+					stock.setSize(dummySize);
+				}
+				historyList.add(new HistoryDto(
+						(String)stock.getCategory().getCategoryName(),
+						(String)stock.getItem().getItemName(),
+						(String)stock.getSize().getSizeName(),
+						(Integer)list.getAmount(),
+						(Date)list.getRegisterDate(),
+						(String)list.getPerson(),
+						(String)list.getComment(),
+						(String)list.getExecute()
+						));
+			}
+			return historyList;
+		} catch (Exception e){
+			e.printStackTrace();
+			return null;
+		}
+	}
+
 
 }

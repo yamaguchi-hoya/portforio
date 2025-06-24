@@ -12,6 +12,7 @@
   <aside>
     <h1>在庫管理</h1>
     <a th:href="@{/index}" class="aside-btn">TOPへ</a>
+	<a th:href="@{/stock-top}" class="aside-btn">ダッシュボード</a>
     <a th:href="@{/stock-shipping}" class="aside-btn">出荷</a>
     <a th:href="@{/stock-arrival}" class="aside-btn">入荷</a>
     <a th:href="@{/regist-category}" class="aside-btn">カテゴリー管理</a>
@@ -21,17 +22,23 @@
   </aside>
 
   <div class="main-content">
-    <div class="form-container">
-      <h3 class="h3-title">カテゴリー編集</h3>
+	<header class="card-title">
+	  <h2>カテゴリー管理</h2>
+	</header>
+    <div class="form-wrapper">
 
-      <form th:action="@{regist-category}" method="POST" th:object="${categoryForm}" id="edit">
-        <div class="form-group">
-          <label for="categoryNameInput" class="form-label">カテゴリー名</label>
-          <div class="form-input">
-            <input type="text" class="form-control" th:field="*{categoryName}" id="categoryNameInput">
-            <p th:if="${#fields.hasErrors('categoryName')}" th:errors="*{categoryName}" class="error-msg"></p>
-          </div>
-        </div>
+      <form th:action="@{regist-category}" method="POST" th:object="${categoryForm}" id="edit">	
+		<table class="table table-bordered align-middle">
+          <tbody>
+            <tr>
+              <th class="w-25">カテゴリー名</th>
+              <td>
+                <input type="text" th:field="*{categoryName}" class="form-control" id="categoryNameInput">
+                <p th:if="${#fields.hasErrors('categoryName')}" th:errors="*{categoryName}" class="error-msg"></p>
+              </td>
+            </tr>
+          </tbody>
+        </table>
       </form>
 
       <div class="form-btn-container">

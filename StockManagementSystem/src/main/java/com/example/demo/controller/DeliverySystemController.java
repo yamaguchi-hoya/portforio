@@ -1,7 +1,9 @@
 package com.example.demo.controller;
 
 import java.time.LocalDate;
+import java.util.ArrayList;
 import java.util.List;
+import java.util.Map;
 
 import jakarta.servlet.http.HttpSession;
 
@@ -26,6 +28,7 @@ import org.springframework.web.bind.support.SessionStatus;
 import com.example.demo.dao.DeliveryHistoryDAOImpl;
 import com.example.demo.dto.CategoryDto;
 import com.example.demo.dto.CompanyDto;
+import com.example.demo.dto.DeliveryDashboardDtoWrapper;
 import com.example.demo.dto.DeliveryHistoryDto;
 import com.example.demo.dto.DeliveryItemDto;
 import com.example.demo.dto.ItemDto;
@@ -74,7 +77,90 @@ public class DeliverySystemController {
 	
 	
 	@GetMapping("/delivery-top")
-	public String deliveryTop() {
+	public String deliveryTop(Model model) {
+		LocalDate nowDate = LocalDate.now();
+		DeliveryDashboardDtoWrapper wrapper = deliverySlipService.getDeliveryDashboard(nowDate);
+		int totalPrice = 0;
+		for (Map.Entry<String, Integer> map : wrapper.getCategoryPriceTotal().entrySet()) {
+			totalPrice = totalPrice + map.getValue();
+		}
+		int totalAmount = 0;
+		for (Map.Entry<String, Integer> map : wrapper.getCategoryAmountTotal().entrySet()) {
+			totalAmount = totalAmount + map.getValue();
+		}
+		model.addAttribute("dailyPrice", new ArrayList<>(wrapper.getDailyPrice().values()));
+		model.addAttribute("totalDailyAmount",new ArrayList<>(wrapper.getTotalDailyAmount().values()));
+		model.addAttribute("categoryDailyPriceList", wrapper.getCategoryDailyPriceList());
+		model.addAttribute("categoryAmountTotal", wrapper.getCategoryAmountTotal());
+		model.addAttribute("categoryPriceTotal", wrapper.getCategoryPriceTotal());
+		model.addAttribute("totalPrice", totalPrice);
+		model.addAttribute("totalAmount", totalAmount);
+		model.addAttribute("dayList", wrapper.getDayList());
+		model.addAttribute("yearAndMonth","ダッシュボード　" + wrapper.getYear() + "年" + wrapper.getMonth() + "月");
+		model.addAttribute("year", wrapper.getYear());
+		model.addAttribute("month", wrapper.getMonth());
+		return "/delivery/delivery-top";
+	}
+	@PostMapping("/delivery-month-before")
+	public String deliveryMonthBefore(Model model, int year, int month) {
+		if (month == 1) {
+			year = year - 1 ;			
+			month = 12;
+		} else {
+			month = month - 1;
+		}
+		LocalDate newDate = LocalDate.of(year,month,15);
+		DeliveryDashboardDtoWrapper wrapper = deliverySlipService.getDeliveryDashboard(newDate);
+		int totalPrice = 0;
+		for (Map.Entry<String, Integer> map : wrapper.getCategoryPriceTotal().entrySet()) {
+			totalPrice = totalPrice + map.getValue();
+		}
+		int totalAmount = 0;
+		for (Map.Entry<String, Integer> map : wrapper.getCategoryAmountTotal().entrySet()) {
+			totalAmount = totalAmount + map.getValue();
+		}
+		model.addAttribute("dailyPrice", new ArrayList<>(wrapper.getDailyPrice().values()));
+		model.addAttribute("totalDailyAmount",new ArrayList<>(wrapper.getTotalDailyAmount().values()));
+		model.addAttribute("categoryDailyPriceList", wrapper.getCategoryDailyPriceList());
+		model.addAttribute("categoryAmountTotal", wrapper.getCategoryAmountTotal());
+		model.addAttribute("categoryPriceTotal", wrapper.getCategoryPriceTotal());
+		model.addAttribute("totalPrice", totalPrice);
+		model.addAttribute("totalAmount", totalAmount);
+		model.addAttribute("dayList", wrapper.getDayList());
+		model.addAttribute("yearAndMonth","ダッシュボード　" + wrapper.getYear() + "年" + wrapper.getMonth() + "月");
+		model.addAttribute("year", wrapper.getYear());
+		model.addAttribute("month", wrapper.getMonth());
+		return "/delivery/delivery-top";
+	}
+	@PostMapping("/delivery-month-after")
+	public String deliveryMonthAfter(Model model, int year, int month) {
+		if (month == 12) {
+			year = year + 1 ;			
+			month = 1;
+		} else {
+			month = month + 1;
+		}
+		LocalDate newDate = LocalDate.of(year,month,15);
+		DeliveryDashboardDtoWrapper wrapper = deliverySlipService.getDeliveryDashboard(newDate);
+		int totalPrice = 0;
+		for (Map.Entry<String, Integer> map : wrapper.getCategoryPriceTotal().entrySet()) {
+			totalPrice = totalPrice + map.getValue();
+		}
+		int totalAmount = 0;
+		for (Map.Entry<String, Integer> map : wrapper.getCategoryAmountTotal().entrySet()) {
+			totalAmount = totalAmount + map.getValue();
+		}
+		model.addAttribute("dailyPrice", new ArrayList<>(wrapper.getDailyPrice().values()));
+		model.addAttribute("totalDailyAmount",new ArrayList<>(wrapper.getTotalDailyAmount().values()));
+		model.addAttribute("categoryDailyPriceList", wrapper.getCategoryDailyPriceList());
+		model.addAttribute("categoryAmountTotal", wrapper.getCategoryAmountTotal());
+		model.addAttribute("categoryPriceTotal", wrapper.getCategoryPriceTotal());
+		model.addAttribute("totalPrice", totalPrice);
+		model.addAttribute("totalAmount", totalAmount);
+		model.addAttribute("dayList", wrapper.getDayList());
+		model.addAttribute("yearAndMonth","ダッシュボード　" + wrapper.getYear() + "年" + wrapper.getMonth() + "月");
+		model.addAttribute("year", wrapper.getYear());
+		model.addAttribute("month", wrapper.getMonth());
 		return "/delivery/delivery-top";
 	}
 	//---------------------------------------------------------------納品書作成-----------------------------------------------------------------------

@@ -11,6 +11,7 @@
   <aside>
     <h1>在庫管理</h1>
     <a th:href="@{/index}" class="aside-btn">TOPへ</a>
+	<a th:href="@{/stock-top}" class="aside-btn">ダッシュボード</a>
     <a th:href="@{/stock-shipping}" class="aside-btn">出荷</a>
     <a th:href="@{/stock-arrival}" class="aside-btn">入荷</a>
     <a th:href="@{/regist-category}" class="aside-btn">カテゴリー管理</a>
@@ -20,7 +21,9 @@
   </aside>
 
   <div class="main-content">
-    <h2>入荷</h2>
+	<header class="card-title">
+	  <h2>入荷</h2>
+	</header>
 
     <form th:action="@{/stock-arrival}" method="POST" th:object="${stockForm}" class="form-wrapper">
 

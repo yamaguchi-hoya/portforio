@@ -17,6 +17,7 @@
   <aside>
     <h1>在庫管理</h1>
     <a th:href="@{/index}" class="aside-btn">TOPへ</a>
+	<a th:href="@{/stock-top}" class="aside-btn">ダッシュボード</a>
     <a th:href="@{/stock-shipping}" class="aside-btn">出荷</a>
     <a th:href="@{/stock-arrival}" class="aside-btn">入荷</a>
     <a th:href="@{/regist-category}" class="aside-btn">カテゴリー管理</a>
@@ -26,18 +27,13 @@
   </aside>
 
   <div class="main-content">
-    <header class="mb-4">
-      <h1>在庫一覧</h1>
-    </header>
+	<header class="card-title">
+	  <h2>在庫一覧</h2>
+	</header>
 
     <div class="form-wrapper">
       <!-- 検索フォーム -->
       <form th:action="@{/stock-list}" method="POST" th:object="${categoryForm}" class="mb-4">
-<!--        <div class="row g-3 align-items-center">-->
-<!--          <div class="col-auto">-->
-<!--            <label for="category" class="col-form-label">カテゴリー</label>-->
-<!--          </div>-->
-<!--          <div class="col-auto">-->
             <select id="category" class="form-select" th:field="*{categoryId}">
               <option th:value="0">--- カテゴリーを選択 ---</option>
               <option th:each="list : ${categoryList}"
@@ -46,11 +42,9 @@
                       th:selected="${categoryForm.categoryId}==${list.categoryId}">
               </option>
             </select>
-<!--          </div>-->
           <div class="mt-3 text-center">
             <button type="submit" class="btn btn-primary form-btn">検索</button>
           </div>
-<!--        </div>-->
       </form>
 
       <!-- 在庫一覧テーブル -->
@@ -59,11 +53,11 @@
           <thead class="table-light">
             <tr>
               <th scope="col"></th>
-              <th scope="col">カテゴリー</th>
-              <th scope="col">商品</th>
-              <th scope="col">サイズ</th>
-              <th scope="col">数量</th>
-              <th scope="col">価格</th>
+              <th class="text-center" scope="col">カテゴリー</th>
+              <th class="text-center" scope="col">商品</th>
+              <th class="text-center" scope="col">サイズ</th>
+              <th class="text-center" scope="col">数量</th>
+              <th class="text-center" scope="col">価格</th>
             </tr>
           </thead>
           <tbody>

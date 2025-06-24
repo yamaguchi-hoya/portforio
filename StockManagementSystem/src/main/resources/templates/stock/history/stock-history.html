@@ -17,6 +17,7 @@
   <aside>
     <h1>在庫管理</h1>
     <a th:href="@{/index}" class="aside-btn">TOPへ</a>
+	<a th:href="@{/stock-top}" class="aside-btn">ダッシュボード</a>
     <a th:href="@{/stock-shipping}" class="aside-btn">出荷</a>
     <a th:href="@{/stock-arrival}" class="aside-btn">入荷</a>
     <a th:href="@{/regist-category}" class="aside-btn">カテゴリー管理</a>
@@ -26,9 +27,9 @@
   </aside>
 
   <div class="main-content">
-    <header class="mb-4">
-      <h1>出納履歴</h1>
-    </header>
+	<header class="card-title">
+	  <h2>出納履歴</h2>
+	</header>
 
     <!-- 検索フォーム -->
     <div class="form-wrapper mb-4">
@@ -102,14 +103,14 @@
 	        <thead class="table-light">
 	          <tr>
 	            <th ></th >
-	            <th>日時</th>
-	            <th>操作</th>
-	            <th>カテゴリー</th>
-	            <th>商品</th>
-	            <th>サイズ</th>
-	            <th>数量</th>
-	            <th>担当者</th>
-	            <th>備考</th>
+	            <th class="text-center">日時</th>
+	            <th class="text-center">操作</th>
+	            <th class="text-center">カテゴリー</th>
+	            <th class="text-center">商品</th>
+	            <th class="text-center">サイズ</th>
+	            <th class="text-center">数量</th>
+	            <th class="text-center">担当者</th>
+	            <th class="text-center">備考</th>
 	          </tr>
 	        </thead>
 	        <tbody>

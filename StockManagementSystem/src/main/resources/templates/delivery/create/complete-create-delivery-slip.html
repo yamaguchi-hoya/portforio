@@ -11,12 +11,16 @@
 	<aside>
 	  <h1>納品書</h1>
 	  <a th:href="@{/index}" class="aside-btn">TOPへ</a>
+	  <a th:href="@{/delivery-top}" class="aside-btn">ダッシュボード</a>
 	  <a th:href="@{/create-delivery-slip-step1}" class="aside-btn">納品書作成</a>
 	  <a th:href="@{/delivery-history}" class="aside-btn">納品履歴</a>
 	  <a th:href="@{/company}" class="aside-btn">会社情報</a>
 	</aside>
 
   <div class="main-content">
+	<div class="card-title">
+	    <h2>納品書作成</h2>
+	</div>
     <div class="complete-box" style="margin-top: 15rem;">
       <p class="complete-message">登録が完了しました。</p>
       <a th:href="@{create-delivery-slip-step1}" class="btn btn-secondary form-btn">戻る</a>

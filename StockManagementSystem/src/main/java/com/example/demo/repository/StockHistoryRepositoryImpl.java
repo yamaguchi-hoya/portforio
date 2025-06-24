@@ -22,7 +22,7 @@ public class StockHistoryRepositoryImpl implements StockHistoryRepository {
 	@Override
 	public List<HistoryDto> getAllHistory() {
 //		String sql = "SELECT * FROM record";
-		String sql = "category_id, category_name, item_id, item_name, size_id, size_name. amount, register_date, person, domment"
+		String sql = "category_id, category_name, item_id, item_name, size_id, size_name. amount, register_date, person, comment"
 					 + "FROM record"
 				 	 + "LEFT JOIN category ON stock.category_id = category.category_id "
 				 	 + "LEFT JOIN item ON stock.item_id = item.item_id "

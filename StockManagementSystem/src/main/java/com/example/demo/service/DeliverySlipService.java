@@ -1,8 +1,10 @@
 package com.example.demo.service;
 
+import java.time.LocalDate;
 import java.util.List;
 
 import com.example.demo.dto.CompanyDto;
+import com.example.demo.dto.DeliveryDashboardDtoWrapper;
 import com.example.demo.dto.DeliveryItemDto;
 import com.example.demo.form.DeliveryForm;
 import com.example.demo.form.DeliveryItemForm;
@@ -16,4 +18,5 @@ public interface DeliverySlipService {
 	public List<DeliveryItemDto> deliveryItemAddToList(DeliveryItemForm form, List<DeliveryItemDto> list);
 	public DeliveryItemFormWrapper deliveryItemAddToWrapper(DeliveryItemForm form, DeliveryItemFormWrapper list);
 	public DeliveryItemFormWrapper deliveryItemRemoveFromWrapper(DeliveryItemFormWrapper list, int itemNo);
+	public DeliveryDashboardDtoWrapper getDeliveryDashboard(LocalDate nowDate);
 }

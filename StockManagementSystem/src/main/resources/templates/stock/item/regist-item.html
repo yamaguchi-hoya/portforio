@@ -12,6 +12,7 @@
   <aside>
     <h1>在庫管理</h1>
     <a th:href="@{/index}" class="aside-btn">TOPへ</a>
+	<a th:href="@{/stock-top}" class="aside-btn">ダッシュボード</a>
     <a th:href="@{/stock-shipping}" class="aside-btn">出荷</a>
     <a th:href="@{/stock-arrival}" class="aside-btn">入荷</a>
     <a th:href="@{/regist-category}" class="aside-btn">カテゴリー管理</a>
@@ -21,9 +22,9 @@
   </aside>
 
   <div class="main-content">
-    <header class="mb-4">
-      <h1>商品管理</h1>
-    </header>
+	<header class="card-title">
+	  <h2>商品管理</h2>
+	</header>
 
     <!-- 商品登録フォーム -->
     <form th:action="@{regist-item}" method="POST" th:object="${itemForm}" class="form-wrapper">
@@ -68,14 +69,14 @@
           </option>
         </select>
       </form>
-      <div class="table-responsive">
-        <table class="table table-bordered table-sm text-center">
+      <div class="table-responsive scroll-table">
+        <table class="category-table table table-bordered table-sm text-center">
           <thead class="table-light">
             <tr>
-              <th style="width: 5%;"></th>
-              <th style="width: 55%;">商品名</th>
-              <th style="width: 40%;">操作</th>
-            </tr>
+              <th style="width: 10%;"></th>
+              <th class="text-center" style="width: 60%;">商品名</th>
+              <th class="text-center" style="width: 30%;">操作</th>
+            </tr> 
           </thead>
           <tbody id="item-table-body">
 			
@@ -105,9 +106,10 @@
               items.forEach((item, index) => {
                 const tr = document.createElement("tr");
                 tr.innerHTML = `
-                  <th>${index + 1}</th>
+                  <th class="text-center">${index + 1}</th>
                   <td>${item.itemName}</td>
                   <td>
+					<div class="text-center table-content">
                     <form action="/item-edit" method="POST" class="d-inline">
                       <input type="hidden" name="itemId" value="${item.itemId}">
                       <input type="hidden" name="itemName" value="${item.itemName}">
@@ -119,6 +121,7 @@
                       <input type="hidden" name="itemId" value="${item.itemId}">
                       <input type="submit" value="削除" class="btn btn-outline-danger form-delete-btn-mini">
                     </form>
+					</div>
                   </td>
                 `;
                 itemTableBody.appendChild(tr);

@@ -54,10 +54,6 @@ public class DeliveryHistoryDAOImpl implements DeliveryHistoryDAO<DeliveryHistor
 		if (endDate != null) {
 			query.setParameter("endDate", endDate);
 		}
-		System.out.println(destination);
-		System.out.println(startDate);
-		System.out.println(endDate);
-		System.out.println(finalQuery);
 		@SuppressWarnings("unchecked")
 		List<DeliveryHistoryDto> list = query.getResultList();
 		entityManager.close();

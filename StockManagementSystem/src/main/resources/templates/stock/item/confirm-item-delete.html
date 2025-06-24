@@ -11,6 +11,7 @@
   <aside>
     <h1>在庫管理</h1>
     <a th:href="@{/index}" class="aside-btn">TOPへ</a>
+	<a th:href="@{/stock-top}" class="aside-btn">ダッシュボード</a>
     <a th:href="@{/stock-shipping}" class="aside-btn">出荷</a>
     <a th:href="@{/stock-arrival}" class="aside-btn">入荷</a>
     <a th:href="@{/regist-category}" class="aside-btn">カテゴリー管理</a>
@@ -20,12 +21,12 @@
   </aside>
 
   <div class="main-content">
-    <header class="mb-4">
-      <h1>商品管理</h1>
-    </header>
+	<header class="card-title">
+	  <h2>商品管理</h2>
+	</header>
 
     <div class="form-wrapper">
-      <h3 class="h3-title">商品削除確認</h3>
+      <h2>商品削除</h2>
 
       <table class="table table-bordered align-middle">
         <thead>

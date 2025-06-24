@@ -11,6 +11,7 @@
   <aside>
     <h1>在庫管理</h1>
     <a th:href="@{/index}" class="aside-btn">TOPへ</a>
+	<a th:href="@{/stock-top}" class="aside-btn">ダッシュボード</a>
     <a th:href="@{/stock-shipping}" class="aside-btn">出荷</a>
     <a th:href="@{/stock-arrival}" class="aside-btn">入荷</a>
     <a th:href="@{/regist-category}" class="aside-btn">カテゴリー管理</a>
@@ -20,19 +21,19 @@
   </aside>
 
   <div class="main-content">
-    <div class="form-container" th:object="${categoryForm}">
-      <h3 class="h3-title">カテゴリー編集確認</h3>
-
-      <div class="form-group">
-        <label class="form-label">カテゴリー名</label>
-        <div class="form-value">
-          <p th:text="*{categoryName}"></p>
-        </div>
-      </div>
-
-      <p class="text-center mt-4">この内容で登録します。よろしいですか？</p>
-
-      <div class="form-btn-container">
+	<header class="card-title">
+	  <h2>カテゴリー管理</h2>
+	</header>
+    <div class="form-wrapper" th:object="${categoryForm}">
+		<table class="table table-bordered align-middle">
+		  <tbody>
+		    <tr>
+		      <th class="w-25">カテゴリー名</th>
+		      <td th:text="*{categoryName}" id="categoryNameInput"></td>
+		    </tr>
+		  </tbody>
+		</table>
+		<div class="form-btn-container">
         <form th:action="@{/confirm-category-edit-ret}" method="POST">
           <input type="hidden" th:field="*{categoryId}">
           <input type="hidden" th:field="*{categoryName}">

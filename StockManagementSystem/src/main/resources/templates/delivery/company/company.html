@@ -11,14 +11,16 @@
   <aside>
     <h1>納品書</h1>
     <a th:href="@{/index}" class="aside-btn">TOPへ</a>
+	<a th:href="@{/delivery-top}" class="aside-btn">ダッシュボード</a>
     <a th:href="@{/create-delivery-slip-step1}" class="aside-btn">納品書作成</a>
     <a th:href="@{/delivery-history}" class="aside-btn">納品履歴</a>
     <a th:href="@{/company}" class="aside-btn">会社情報</a>
   </aside>
 
   <div class="main-content">
-    <h2>会社情報</h2>
-
+	<div class="card-title">
+	    <h2>会社情報</h2>
+	</div>
     <form th:action="@{/company}" method="POST" th:object="${companyForm}" class="form-wrapper">
 
       <div class="form-row">

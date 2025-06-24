@@ -11,6 +11,7 @@
   <aside>
     <h1>在庫管理</h1>
     <a th:href="@{/index}" class="aside-btn">TOPへ</a>
+	<a th:href="@{/stock-top}" class="aside-btn">ダッシュボード</a>
     <a th:href="@{/stock-shipping}" class="aside-btn">出荷</a>
     <a th:href="@{/stock-arrival}" class="aside-btn">入荷</a>
     <a th:href="@{/regist-category}" class="aside-btn">カテゴリー管理</a>
@@ -20,6 +21,9 @@
   </aside>
 
   <div class="main-content">
+	<header class="card-title">
+	  <h2>商品管理</h2>
+	</header>
     <div class="complete-box" style="margin-top: 15rem;">
       <p class="complete-message">登録が完了しました。</p>
       <a th:href="@{/regist-item}" class="btn btn-secondary form-btn">戻る</a>

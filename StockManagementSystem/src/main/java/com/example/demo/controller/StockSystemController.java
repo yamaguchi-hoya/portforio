@@ -18,6 +18,7 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
 
 import com.example.demo.dto.CategoryDto;
+import com.example.demo.dto.DashboardDto;
 import com.example.demo.dto.HistoryDto;
 import com.example.demo.dto.ItemDto;
 import com.example.demo.dto.SizeDto;
@@ -32,6 +33,7 @@ import com.example.demo.form.ItemForm;
 import com.example.demo.form.SizeForm;
 import com.example.demo.form.SizeFormWrapper;
 import com.example.demo.form.StockForm;
+import com.example.demo.service.DashboardService;
 import com.example.demo.service.RegistCategoryService;
 import com.example.demo.service.RegistItemService;
 import com.example.demo.service.RegistSizeService;
@@ -48,6 +50,7 @@ public class StockSystemController {
 	private final RegistItemService registItemService;
 	private final RegistSizeService registSizeService;
 	private final StockHistoryService stockHistoryService;
+	private final DashboardService dashboardservice;
 	
 	@GetMapping("/index")
 	public String index() {
@@ -55,12 +58,47 @@ public class StockSystemController {
 	}
 	//在庫-TOP
 	@GetMapping("/stock-top")
-	public String stockTop() {
+	public String stockTop(Model model) {
+		DashboardDto dto = dashboardservice.getHistoryListMonthly();
+		model.addAttribute("yearAndMonth","ダッシュボード　" + dto.getYear() + "年" + dto.getMonth() + "月");
+		model.addAttribute("year", dto.getYear());
+		model.addAttribute("month", dto.getMonth());
+		model.addAttribute("dayList", dto.getDayList());
+		model.addAttribute("shippingCountList", new ArrayList<>(dto.getShippingCountMap().values()));
+		model.addAttribute("arrivalCountList", new ArrayList<>(dto.getArrivalCountMap().values()));
+		model.addAttribute("shippingCategoryMap", dto.getShippingCategoryMap());
+		model.addAttribute("arrivalCategoryMap", dto.getArrivalCategoryMap());
 		return "/stock/stock-top";
 	}
 	@GetMapping("/in-preparation")
 	public String inPreparation() {
 		return "in-preparation";
+	}
+	@PostMapping("/month-before")
+	public String monthBefore(Model model,int year, int month) {
+		DashboardDto dto = dashboardservice.getHistoryListMonthlyBefore(year, month);
+		model.addAttribute("yearAndMonth","ダッシュボード　" + dto.getYear() + "年" + dto.getMonth() + "月");
+		model.addAttribute("year", dto.getYear());
+		model.addAttribute("month", dto.getMonth());
+		model.addAttribute("dayList", dto.getDayList());
+		model.addAttribute("shippingCountList", new ArrayList<>(dto.getShippingCountMap().values()));
+		model.addAttribute("arrivalCountList", new ArrayList<>(dto.getArrivalCountMap().values()));
+		model.addAttribute("shippingCategoryMap", dto.getShippingCategoryMap());
+		model.addAttribute("arrivalCategoryMap", dto.getArrivalCategoryMap());
+		return "/stock/stock-top";
+	}
+	@PostMapping("/month-after")
+	public String monthAfter(Model model,int year, int month) {
+		DashboardDto dto = dashboardservice.getHistoryListMonthlyAfter(year, month);
+		model.addAttribute("yearAndMonth","ダッシュボード　" + dto.getYear() + "年" + dto.getMonth() + "月");
+		model.addAttribute("year", dto.getYear());
+		model.addAttribute("month", dto.getMonth());
+		model.addAttribute("dayList", dto.getDayList());
+		model.addAttribute("shippingCountList", new ArrayList<>(dto.getShippingCountMap().values()));
+		model.addAttribute("arrivalCountList", new ArrayList<>(dto.getArrivalCountMap().values()));
+		model.addAttribute("shippingCategoryMap", dto.getShippingCategoryMap());
+		model.addAttribute("arrivalCategoryMap", dto.getArrivalCategoryMap());
+		return "/stock/stock-top";
 	}
 	//---------------------------------------------------------------出荷-----------------------------------------------------------------------
 	//在庫-出荷①

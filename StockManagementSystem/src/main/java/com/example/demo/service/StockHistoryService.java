@@ -15,4 +15,5 @@ public interface StockHistoryService {
 							  @RequestParam(required = false) LocalDate startDate,
 							  @RequestParam(required = false) LocalDate endDate,
 							  @RequestParam(required = false) String execute);
+	List<HistoryDto> getSearchMonthly(@RequestParam(required = false) LocalDate nowDate);
 }
