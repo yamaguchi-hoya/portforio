@@ -99,7 +99,7 @@ public class DeliverySystemController {
 		model.addAttribute("yearAndMonth","ダッシュボード　" + wrapper.getYear() + "年" + wrapper.getMonth() + "月");
 		model.addAttribute("year", wrapper.getYear());
 		model.addAttribute("month", wrapper.getMonth());
-		return "/delivery/delivery-top";
+		return "delivery/delivery-top";
 	}
 	@PostMapping("/delivery-month-before")
 	public String deliveryMonthBefore(Model model, int year, int month) {
@@ -130,7 +130,7 @@ public class DeliverySystemController {
 		model.addAttribute("yearAndMonth","ダッシュボード　" + wrapper.getYear() + "年" + wrapper.getMonth() + "月");
 		model.addAttribute("year", wrapper.getYear());
 		model.addAttribute("month", wrapper.getMonth());
-		return "/delivery/delivery-top";
+		return "delivery/delivery-top";
 	}
 	@PostMapping("/delivery-month-after")
 	public String deliveryMonthAfter(Model model, int year, int month) {
@@ -161,7 +161,7 @@ public class DeliverySystemController {
 		model.addAttribute("yearAndMonth","ダッシュボード　" + wrapper.getYear() + "年" + wrapper.getMonth() + "月");
 		model.addAttribute("year", wrapper.getYear());
 		model.addAttribute("month", wrapper.getMonth());
-		return "/delivery/delivery-top";
+		return "delivery/delivery-top";
 	}
 	//---------------------------------------------------------------納品書作成-----------------------------------------------------------------------
 	//納品書作成①
@@ -173,7 +173,7 @@ public class DeliverySystemController {
 		model.addAttribute("categoryList",list);
 		model.addAttribute("deliveryItemForm", deliveryItemForm);
 		model.addAttribute("deliveryList", deliveryItemFormWrapper.getDeliveryItemList());
-		return "/delivery/create/create-delivery-slip-step1";
+		return "delivery/create/create-delivery-slip-step1";
 	}
 	@GetMapping("/create-delivery-slip-step1/by-category")
 	@ResponseBody
@@ -207,7 +207,7 @@ public class DeliverySystemController {
 			model.addAttribute("deliveryItemForm", deliveryItemForm);
 			model.addAttribute("deliveryList", deliveryItemList);
 			model.addAttribute("deliveryForm", deliveryForm);
-			return "/delivery/create/create-delivery-slip-step1";
+			return "delivery/create/create-delivery-slip-step1";
 		} else {
 			List<CategoryDto> list = registCategoryService.getAll();
 			DeliveryItemFormWrapper updateList = deliverySlipService.deliveryItemAddToWrapper(deliveryItemForm, deliveryItemFormWrapper);		
@@ -222,7 +222,7 @@ public class DeliverySystemController {
 			model.addAttribute("deliveryItemForm", resetForm);
 			model.addAttribute("deliveryList", updateList.getDeliveryItemList());
 			model.addAttribute("deliveryForm", deliveryForm);
-			return "/delivery/create/create-delivery-slip-step1";			
+			return "delivery/create/create-delivery-slip-step1";			
 		}
 	}
 	//納品書作成①-商品削除
@@ -237,7 +237,7 @@ public class DeliverySystemController {
 		model.addAttribute("deliveryList", updateList.getDeliveryItemList());
 		model.addAttribute("deliveryItemForm", deliveryItemForm);
 		model.addAttribute("deliveryForm", deliveryForm);
-		return "/delivery/create/create-delivery-slip-step1";
+		return "delivery/create/create-delivery-slip-step1";
 	}
 	//納品書作成②
 	@PostMapping("/create-delivery-slip-step1-next")
@@ -249,7 +249,7 @@ public class DeliverySystemController {
 		model.addAttribute("deliveryForm", deliveryForm);
 		model.addAttribute("deliveryList", deliveryItemFormWrapper.getDeliveryItemList());
 		
-		return "/delivery/create/create-delivery-slip-step2";
+		return "delivery/create/create-delivery-slip-step2";
 	}
 	//納品書作成②-戻り
 	@PostMapping("/create-delivery-slip-step2-ret")
@@ -262,7 +262,7 @@ public class DeliverySystemController {
 		model.addAttribute("deliveryItemForm", deliveryItemForm);
 		model.addAttribute("deliveryForm", deliveryForm);
 		model.addAttribute("deliveryList", deliveryItemFormWrapper.getDeliveryItemList());
-		return "/delivery/create/create-delivery-slip-step1";
+		return "delivery/create/create-delivery-slip-step1";
 	}
 	//納品書作成③
 	@PostMapping("/create-delivery-slip-step2-next")
@@ -279,7 +279,7 @@ public class DeliverySystemController {
 			model.addAttribute("deliveryForm", deliveryForm);
 			model.addAttribute("deliveryItemForm", deliveryItemForm);
 			model.addAttribute("deliveryList", deliveryItemFormWrapper.getDeliveryItemList());
-			return "/delivery/create/preview-create-delivery-slip";			
+			return "delivery/create/preview-create-delivery-slip";			
 		}
 	}
 	//納品書作成③-戻り
@@ -292,7 +292,7 @@ public class DeliverySystemController {
 		model.addAttribute("deliveryItemForm", deliveryItemForm);
 		model.addAttribute("deliveryForm", deliveryForm);
 		model.addAttribute("deliveryList", deliveryItemFormWrapper.getDeliveryItemList());
-		return "/delivery/create/create-delivery-slip-step2";
+		return "delivery/create/create-delivery-slip-step2";
 	}
 	//納品書作成③-画面内表示
 	@GetMapping("/pdf/view")
@@ -317,7 +317,7 @@ public class DeliverySystemController {
 		model.addAttribute("deliveryForm", deliveryForm);
 		model.addAttribute("deliveryItemForm", deliveryItemForm);
 		model.addAttribute("deliveryList", deliveryItemFormWrapper.getDeliveryItemList());
-		return "/delivery/create/confirm-create-delivery-slip";
+		return "delivery/create/confirm-create-delivery-slip";
 	}
 	//納品書作成④-戻り
 	@PostMapping("/confirm-create-delivery-slip-ret")
@@ -328,7 +328,7 @@ public class DeliverySystemController {
 		model.addAttribute("deliveryForm", deliveryForm);
 		model.addAttribute("deliveryItemForm", deliveryItemForm);
 		model.addAttribute("deliveryList", deliveryItemFormWrapper.getDeliveryItemList());
-		return "/delivery/create/preview-create-delivery-slip";
+		return "delivery/create/preview-create-delivery-slip";
 	}
 	//納品書作成⑤
 	@PostMapping("/confirm-create-delivery-slip-next")
@@ -341,18 +341,18 @@ public class DeliverySystemController {
 		CompanyDto company = companyService.getCompany();
 		deliverySlipService.createDeliverySlip(deliveryForm, deliveryItemFormWrapper, company, check);
 		sessionStatus.setComplete();
-		return "/delivery/create/complete-create-delivery-slip";
+		return "delivery/create/complete-create-delivery-slip";
 	}
 //	セッションスコープ破棄
 	@GetMapping("/reset-delivery-item-list")
 	public String resetDeliveryItemList(SessionStatus sessionStatus) {
 	    sessionStatus.setComplete(); // セッションのdeliveryItemListを破棄
-	    return "redirect:/create-delivery-slip-step1";
+	    return "redirect:create-delivery-slip-step1";
 	}
 	@GetMapping("/reset-delivery-form")
 	public String resetDeliveryForm(HttpSession session) {
 	    session.removeAttribute("deliveryForm"); // セッションのdeliveryItemListを破棄
-	    return "redirect:/create-delivery-slip-step1";
+	    return "redirect:create-delivery-slip-step1";
 	}
 	
 	//---------------------------------------------------------------会社情報-----------------------------------------------------------------------
@@ -360,14 +360,14 @@ public class DeliverySystemController {
 	@GetMapping("/company")
 	public String company(@ModelAttribute CompanyForm form, Model model) {
 		model.addAttribute("companyForm", companyService.getCompany());
-	    return "/delivery/company/company";
+	    return "delivery/company/company";
 	}
 	//会社情報②
 	@PostMapping("/company")
 	public String company(@Validated @ModelAttribute CompanyForm form, BindingResult result, Model model) {
 		if (result.hasErrors()) {
 			model.addAttribute("companyForm", form);
-		    return "/delivery/company/company";
+		    return "delivery/company/company";
 		}
 		if (!form.getAddressNumber().contains("-")) {
 			StringBuilder sb = new StringBuilder(form.getAddressNumber());
@@ -378,20 +378,20 @@ public class DeliverySystemController {
 			form.setPhoneNumber(sb.insert(3,"-").insert(7,"-").toString());
 		}
 		model.addAttribute("companyForm", form);
-	    return "/delivery/company/confirm-company";
+	    return "delivery/company/confirm-company";
 	}
 	//会社情報②-戻り
 	@PostMapping("/confirm-company-ret")
 	public String confirmCompanyRet(@ModelAttribute CompanyForm form, Model model) {
 		model.addAttribute("companyForm", form);
-	    return "/delivery/company/company";
+	    return "delivery/company/company";
 	}
 	//会社情報③
 	@PostMapping("/confirm-company")
 	public String confirmCompany(@ModelAttribute CompanyForm form, Model model) {
 		companyService.registCompany(form);
 		model.addAttribute("companyForm", form);
-	    return "/delivery/company/complete-company";
+	    return "delivery/company/complete-company";
 	}
 	
 	//---------------------------------------------------------------納品履歴-----------------------------------------------------------------------
@@ -399,7 +399,7 @@ public class DeliverySystemController {
 	@GetMapping("/delivery-history")
 	public String deliveryHistory(@ModelAttribute DeliveryHistoryForm historyForm, Model model) {
 		model.addAttribute("historyForm", historyForm);	
-		return "/delivery/history/delivery-history";
+		return "delivery/history/delivery-history";
 	}
 	//納品履歴-絞り込み
 	@PostMapping("/delivery-history-serch")
@@ -410,7 +410,7 @@ public class DeliverySystemController {
 		List<DeliveryHistoryDto> list = deliveryHistoryDAO.findByConditions(destination, startDate, endDate);
 		model.addAttribute("historyForm", historyForm);	
 		model.addAttribute("historyList", list);	
-		return "/delivery/history/delivery-history";
+		return "delivery/history/delivery-history";
 	}
 	//納品履歴-表示
 	@PostMapping("/delivery-history-view")
@@ -419,7 +419,7 @@ public class DeliverySystemController {
 		idWrapper.setId(id);
 		model.addAttribute("idWrapper", idWrapper);	
 		model.addAttribute("id", id);	
-		return "/delivery/history/view-delivery-history";
+		return "delivery/history/view-delivery-history";
 	}
 	//納品履歴-表示-戻り
 	@GetMapping("/view-delivery-history-ret")
@@ -427,7 +427,7 @@ public class DeliverySystemController {
 		List<DeliveryHistoryDto> list = deliveryHistoryDAO.getAll();
 		model.addAttribute("historyForm", historyForm);	
 		model.addAttribute("historyList", list);	
-		return "/delivery/history/delivery-history";
+		return "delivery/history/delivery-history";
 	}
 	//納品履歴-表示-画面内表示
 	@GetMapping("/pdf/view-history")
@@ -444,7 +444,7 @@ public class DeliverySystemController {
 	@GetMapping("/delivery-history-download")
 	public String deliveryHistoryDownload(@ModelAttribute DeliverySlipIdWrapper idWrapper, Model model) {
 		deliverySlipService.downloadDocument(idWrapper.getId());	
-		return "/delivery/history/complete-download";
+		return "delivery/history/complete-download";
 	}
 	
 }
