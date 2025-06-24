@@ -274,7 +274,7 @@ public class DeliverySystemController {
 			model.addAttribute("deliveryForm", deliveryForm);
 			model.addAttribute("deliveryItemForm", deliveryItemForm);
 			model.addAttribute("deliveryList", deliveryItemFormWrapper.getDeliveryItemList());
-			return "/delivery/create/create-delivery-slip-step2";
+			return "delivery/create/create-delivery-slip-step2";
 		} else {
 			model.addAttribute("deliveryForm", deliveryForm);
 			model.addAttribute("deliveryItemForm", deliveryItemForm);

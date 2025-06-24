@@ -68,7 +68,7 @@ public class StockSystemController {
 		model.addAttribute("arrivalCountList", new ArrayList<>(dto.getArrivalCountMap().values()));
 		model.addAttribute("shippingCategoryMap", dto.getShippingCategoryMap());
 		model.addAttribute("arrivalCategoryMap", dto.getArrivalCategoryMap());
-		return "/stock/stock-top";
+		return "stock/stock-top";
 	}
 	@GetMapping("/in-preparation")
 	public String inPreparation() {
@@ -85,7 +85,7 @@ public class StockSystemController {
 		model.addAttribute("arrivalCountList", new ArrayList<>(dto.getArrivalCountMap().values()));
 		model.addAttribute("shippingCategoryMap", dto.getShippingCategoryMap());
 		model.addAttribute("arrivalCategoryMap", dto.getArrivalCategoryMap());
-		return "/stock/stock-top";
+		return "stock/stock-top";
 	}
 	@PostMapping("/month-after")
 	public String monthAfter(Model model,int year, int month) {
@@ -98,7 +98,7 @@ public class StockSystemController {
 		model.addAttribute("arrivalCountList", new ArrayList<>(dto.getArrivalCountMap().values()));
 		model.addAttribute("shippingCategoryMap", dto.getShippingCategoryMap());
 		model.addAttribute("arrivalCategoryMap", dto.getArrivalCategoryMap());
-		return "/stock/stock-top";
+		return "stock/stock-top";
 	}
 	//---------------------------------------------------------------出荷-----------------------------------------------------------------------
 	//在庫-出荷①
@@ -106,7 +106,7 @@ public class StockSystemController {
 	public String stockShipping(@ModelAttribute StockForm form, Model model) {
 		List<CategoryDto> list = registCategoryService.getAll();
 		model.addAttribute("categoryList",list);
-		return "/stock/shipping/stock-shipping";
+		return "stock/shipping/stock-shipping";
 	}
 	@GetMapping("/stock-shipping/by-category")
 	@ResponseBody
@@ -135,7 +135,7 @@ public class StockSystemController {
 			List<SizeDto> sizelist = registSizeService.getAll();
 			model.addAttribute("sizeList",sizelist);
 			
-			return "/stock/shipping/stock-shipping";			
+			return "stock/shipping/stock-shipping";			
 		} else {
 			int categoryId = form.getCategoryId();
 			List<CategoryDto> categorylist = registCategoryService.getSelect(categoryId);
@@ -146,7 +146,7 @@ public class StockSystemController {
 			int sizeId = form.getSizeId();
 			List<SizeDto> sizelist = registSizeService.getSelectBySizeId(sizeId);
 			model.addAttribute("sizeList",sizelist);
-			return "/stock/shipping/confirm-stock-shipping";		
+			return "stock/shipping/confirm-stock-shipping";		
 		}
 	}
 	//在庫-出荷②-戻り
@@ -154,7 +154,7 @@ public class StockSystemController {
 	public String ConfirmstockShippingRet(@ModelAttribute StockForm form, Model model) {
 		List<CategoryDto> list = registCategoryService.getAll();
 		model.addAttribute("categoryList",list);
-		return "/stock/shipping/stock-shipping";
+		return "stock/shipping/stock-shipping";
 	}
 	//在庫-出荷③-登録
 	@PostMapping("/confirm-stock-shipping")
@@ -178,7 +178,7 @@ public class StockSystemController {
 		f.setPerson(form.getPerson());
 		f.setComment(form.getComment());
 		stockRecordService.shipping(f);
-		return "/stock/shipping/complete-stock-shipping";
+		return "stock/shipping/complete-stock-shipping";
 	}
 	//---------------------------------------------------------------入荷-----------------------------------------------------------------------
 	//在庫-入荷①
@@ -186,7 +186,7 @@ public class StockSystemController {
 	public String stockArrival(@ModelAttribute StockForm form, Model model) {
 		List<CategoryDto> list = registCategoryService.getAll();
 		model.addAttribute("categoryList",list);
-		return "/stock/arrival/stock-arrival";
+		return "stock/arrival/stock-arrival";
 	}
 	@GetMapping("/stock-arrival/by-category")
 	@ResponseBody
@@ -209,7 +209,7 @@ public class StockSystemController {
 			model.addAttribute("itemList",itemlist);
 			List<SizeDto> sizelist = registSizeService.getAll();
 			model.addAttribute("sizeList",sizelist);
-			return "/stock/arrival/stock-arrival";			
+			return "stock/arrival/stock-arrival";			
 		} else {
 			int categoryId = form.getCategoryId();
 			List<CategoryDto> categorylist = registCategoryService.getSelect(categoryId);
@@ -220,7 +220,7 @@ public class StockSystemController {
 			int sizeId = form.getSizeId();
 			List<SizeDto> sizelist = registSizeService.getSelectBySizeId(sizeId);
 			model.addAttribute("sizeList",sizelist);
-			return "/stock/arrival/confirm-stock-arrival";		
+			return "stock/arrival/confirm-stock-arrival";		
 		}
 	}
 	//在庫-入荷②-戻り
@@ -228,7 +228,7 @@ public class StockSystemController {
 	public String ConfirmstockArrivalRet(@ModelAttribute StockForm form, Model model) {
 		List<CategoryDto> list = registCategoryService.getAll();
 		model.addAttribute("categoryList",list);
-		return "/stock/arrival/stock-arrival";
+		return "stock/arrival/stock-arrival";
 	}
 	//在庫-入荷③-登録
 	@PostMapping("/confirm-stock-arrival")
@@ -252,7 +252,7 @@ public class StockSystemController {
 		f.setPerson(form.getPerson());
 		f.setComment(form.getComment());
 		stockRecordService.arrival(f);
-		return "/stock/arrival/complete-stock-arrival";
+		return "stock/arrival/complete-stock-arrival";
 	}
 	//---------------------------------------------------------------カテゴリー管理-----------------------------------------------------------------------
 	//カテゴリー登録①
@@ -260,14 +260,14 @@ public class StockSystemController {
 	public String RegistCategory(@ModelAttribute CategoryForm form, Model model) {
 		List<CategoryDto> list = registCategoryService.getAll();
 		model.addAttribute("categoryList",list);
-		return "/stock/category/regist-category";
+		return "stock/category/regist-category";
 	}
 	//カテゴリー登録②-戻り
 	@PostMapping("/confirm-regist-category-ret")
 	public String ConfirmRegistCategoryret(@ModelAttribute CategoryForm form, Model model) {
 		List<CategoryDto> list = registCategoryService.getAll();
 		model.addAttribute("categoryList",list);
-		return "/stock/category/regist-category";
+		return "stock/category/regist-category";
 	}
 	//カテゴリー登録②
 	@PostMapping("/regist-category")
@@ -275,9 +275,9 @@ public class StockSystemController {
 		if (result.hasErrors()) {
 			List<CategoryDto> list = registCategoryService.getAll();
 			model.addAttribute("categoryList",list);
-			return "/stock/category/regist-category";
+			return "stock/category/regist-category";
 		} else {
-			return "/stock/category/confirm-regist-category";
+			return "stock/category/confirm-regist-category";
 		}
 	}
 	//カテゴリー登録③
@@ -286,7 +286,7 @@ public class StockSystemController {
 		CategoryFormEntity f = new CategoryFormEntity();
 		f.setCategoryName(form.getCategoryName());
 		registCategoryService.regist(f);
-		return "/stock/category/complete-regist-category";
+		return "stock/category/complete-regist-category";
 	}
 	//カテゴリー削除①
 	@PostMapping("/category-delete")
@@ -294,7 +294,7 @@ public class StockSystemController {
 		int id = form.getCategoryId();
 		List<CategoryDto> list = registCategoryService.getSelect(id);
 		model.addAttribute("categoryList",list);
-		return "/stock/category/confirm-category-delete";
+		return "stock/category/confirm-category-delete";
 	}
 	//カテゴリー削除②
 	@PostMapping("/confirm-category-delete")
@@ -302,7 +302,7 @@ public class StockSystemController {
 		CategoryFormEntity f = new CategoryFormEntity();
 		f.setCategoryId(form.getCategoryId());
 		registCategoryService.remove(f);
-		return "/stock/category/complete-category-delete";
+		return "stock/category/complete-category-delete";
 	}
 	//カテゴリー編集①
 	@PostMapping("/category-edit")
@@ -310,7 +310,7 @@ public class StockSystemController {
 		int id = form.getCategoryId();
 		List<CategoryDto> list = registCategoryService.getSelect(id);
 		model.addAttribute("categoryList",list);
-		return "/stock/category/category-edit-input";
+		return "stock/category/category-edit-input";
 	}
 	//カテゴリー編集②
 	@PostMapping("/category-edit-input")
@@ -318,7 +318,7 @@ public class StockSystemController {
 		int id = form.getCategoryId();
 		List<CategoryDto> list = registCategoryService.getSelect(id);
 		model.addAttribute("categoryList",list);
-		return "/stock/category/confirm-category-edit";
+		return "stock/category/confirm-category-edit";
 	}
 	//カテゴリー編集②-戻り
 	@PostMapping("/confirm-category-edit-ret")
@@ -326,7 +326,7 @@ public class StockSystemController {
 		int id = form.getCategoryId();
 		List<CategoryDto> list = registCategoryService.getSelect(id);
 		model.addAttribute("categoryList",list);
-		return "/stock/category/category-edit-input";
+		return "stock/category/category-edit-input";
 	}
 	//カテゴリー編集③-完了
 	@PostMapping("/confirm-category-edit")
@@ -336,7 +336,7 @@ public class StockSystemController {
 		f.setCategoryName(form.getCategoryName());
 		registCategoryService.changeName(f);
 		
-		return "/stock/category/complete-category-edit";
+		return "stock/category/complete-category-edit";
 	}
 	//---------------------------------------------------------------商品管理-----------------------------------------------------------------------
 	//商品登録①
@@ -349,7 +349,7 @@ public class StockSystemController {
 		List<ItemDto> selecteditemlist = registItemService.getSelectByCategoryId(id);
 		model.addAttribute("selectedItemList",selecteditemlist);
 //		model.addAttribute("selectedCategory", selectedCategory);
-		return "/stock/item/regist-item";
+		return "stock/item/regist-item";
 	}
 	@GetMapping("/regist-item/by-category")
 	@ResponseBody
@@ -362,7 +362,7 @@ public class StockSystemController {
 		if (result.hasErrors()) {
 			List<CategoryDto> categoryList = registCategoryService.getAll();
 			model.addAttribute("categoryList",categoryList);
-			return "/stock/item/regist-item";			
+			return "stock/item/regist-item";			
 		} else {
 			//値渡し
 			int categoryId = itemForm.getCategoryId();
@@ -372,7 +372,7 @@ public class StockSystemController {
 			model.addAttribute("itemName", itemName);
 			int price = itemForm.getPrice();
 			model.addAttribute("price", price);
-			return "/stock/item/regist-item-input-size";
+			return "stock/item/regist-item-input-size";
 		}
 	}	
 	//商品登録②-戻り
@@ -386,7 +386,7 @@ public class StockSystemController {
 		int price = itemForm.getPrice();
 		model.addAttribute("price", price);
 		model.addAttribute("selectedCategory", selectedCategory);
-		return "/stock/item/regist-item";
+		return "stock/item/regist-item";
 	}
 	//商品登録③
 	@PostMapping("/regist-item-input-size")
@@ -395,7 +395,7 @@ public class StockSystemController {
 		if (result.hasErrors()) {
 			List<CategoryDto> categoryList = registCategoryService.getAll();
 			model.addAttribute("categoryList",categoryList);
-			return "/stock/item/regist-item-input-size";			
+			return "stock/item/regist-item-input-size";			
 		} else {
 			if (sizes == null || sizes.isEmpty()) {
 				int categoryId = itemForm.getCategoryId();
@@ -405,7 +405,7 @@ public class StockSystemController {
 				model.addAttribute("itemName", itemName);
 				int price = itemForm.getPrice();
 				model.addAttribute("price", price);
-				return "/stock/item/confirm-regist-item";	
+				return "stock/item/confirm-regist-item";	
 			} else {
 				int categoryId = itemForm.getCategoryId();
 				List<CategoryDto> categoryList = registCategoryService.getSelect(categoryId);
@@ -415,7 +415,7 @@ public class StockSystemController {
 				int price = itemForm.getPrice();
 				model.addAttribute("price", price);
 				model.addAttribute("sizeList", sizes);
-				return "/stock/item/confirm-regist-item";		
+				return "stock/item/confirm-regist-item";		
 			}
 		}
 	}
@@ -446,7 +446,7 @@ public class StockSystemController {
 		} else {
 			stockRecordService.registToStockBySize(fItem, sizes, latestItemId);			
 		}	
-		return "/stock/item/complete-regist-item";
+		return "stock/item/complete-regist-item";
 	}
 	//商品登録③-戻り
 	@PostMapping("/confirm-regist-item-ret")
@@ -456,7 +456,7 @@ public class StockSystemController {
 		List<CategoryDto> categorylist = registCategoryService.getSelect(categoryId);
 		model.addAttribute("categoryList",categorylist);
 		model.addAttribute("sizeList", sizes);		
-		return "/stock/item/regist-item-input-size";
+		return "stock/item/regist-item-input-size";
 	}
 
 	//商品削除①
@@ -465,7 +465,7 @@ public class StockSystemController {
 		int id = form.getItemId();
 		List<ItemDto> list = registItemService.getSelectByItemId(id);
 		model.addAttribute("itemList",list);
-		return "/stock/item/confirm-item-delete";
+		return "stock/item/confirm-item-delete";
 	}
 	//商品削除②
 	@PostMapping("/confirm-item-delete")
@@ -473,7 +473,7 @@ public class StockSystemController {
 		ItemFormEntity f = new ItemFormEntity();
 		f.setItemId(form.getItemId());
 		registItemService.remove(f);
-		return "/stock/item/complete-item-delete";
+		return "stock/item/complete-item-delete";
 	}
 	//商品編集①
 	@PostMapping("/item-edit")
@@ -493,7 +493,7 @@ public class StockSystemController {
 		SizeFormWrapper sizeFormWrapper = new SizeFormWrapper();
 		sizeFormWrapper.setSizeFormList(sizeForms);
 		model.addAttribute("sizeFormWrapper", sizeFormWrapper);
-		return "/stock/item/item-edit-input";
+		return "stock/item/item-edit-input";
 	}
 		
 	//商品編集②
@@ -508,14 +508,14 @@ public class StockSystemController {
 			model.addAttribute("itemList", itemlist);
 			List<SizeDto> sizelist = registSizeService.getSelectByItemId(itemId);
 			model.addAttribute("sizeList", sizelist);
-			return "/stock/item/item-edit-input";
+			return "stock/item/item-edit-input";
 		} 
 		else
 		{
 			List<ItemDto> itemlist = registItemService.getSelectByItemId(itemId);
 			model.addAttribute("itemList", itemlist);
 			model.addAttribute("sizeList", sizeFormWrapper.getSizeFormList());
-			return "/stock/item/confirm-edit-item";
+			return "stock/item/confirm-edit-item";
 		}
 	}
 	//商品編集②-戻り
@@ -546,7 +546,7 @@ public class StockSystemController {
 		sizeFormWrapper.setSizeFormList(sizeForms);
 		model.addAttribute("sizeFormWrapper", sizeFormWrapper);
 		model.addAttribute("sizeList", sizeFormWrapper.getSizeFormList());
-		return "/stock/item/item-edit-input";
+		return "stock/item/item-edit-input";
 	}
 	//商品編集③-完了
 	@PostMapping("/confirm-edit-item")
@@ -567,7 +567,7 @@ public class StockSystemController {
 				registSizeService.changeName(sizeF);		
 			}					
 		}
-		return "/stock/item/complete-edit-item";
+		return "stock/item/complete-edit-item";
 	}
 	//---------------------------------------------------------------出納履歴-----------------------------------------------------------------------
 	//出納履歴①
@@ -577,7 +577,7 @@ public class StockSystemController {
 		historyForm.setExecute("all");
 		model.addAttribute("categoryList",list);
 		model.addAttribute("historyForm", historyForm);
-		return "/stock/history/stock-history";
+		return "stock/history/stock-history";
 	}
 	@GetMapping("/stock-history/by-category")
 	@ResponseBody
@@ -596,7 +596,7 @@ public class StockSystemController {
 		model.addAttribute("historyForm", historyForm);
 		model.addAttribute("categoryList", categoryList);
 		model.addAttribute("historyList", historyList);
-		return "/stock/history/stock-history";
+		return "stock/history/stock-history";
 	}
 	//出納履歴①-絞り込み
 	@PostMapping("/stock-history-conditions")
@@ -616,7 +616,7 @@ public class StockSystemController {
 		model.addAttribute("historyForm", historyForm);
 		model.addAttribute("categoryList", categoryList);
 		model.addAttribute("historyList", historyList);
-		return "/stock/history/stock-history";
+		return "stock/history/stock-history";
 	}
 //---------------------------------------------------------------在庫一覧-----------------------------------------------------------------------
 	//在庫一覧①
@@ -624,7 +624,7 @@ public class StockSystemController {
 	public String stockList(@ModelAttribute CategoryForm form, Model model) {
 		List<CategoryDto> categoryList = registCategoryService.getAll();
 		model.addAttribute("categoryList", categoryList);
-		return "/stock/stock-list/stock-list";
+		return "stock/stock-list/stock-list";
 	}
 	//在庫一覧①-絞り込み
 	@PostMapping("/stock-list")
@@ -634,7 +634,7 @@ public class StockSystemController {
 		model.addAttribute("StockList", stockList);
 		List<CategoryDto> categoryList = registCategoryService.getAll();
 		model.addAttribute("categoryList", categoryList);
-		return "/stock/stock-list/stock-list";
+		return "stock/stock-list/stock-list";
 	}
 
 
