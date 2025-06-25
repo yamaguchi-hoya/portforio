@@ -5,6 +5,7 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
 
+import jakarta.servlet.http.HttpServletResponse;
 import jakarta.servlet.http.HttpSession;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -337,9 +338,9 @@ public class DeliverySystemController {
 											@ModelAttribute("deliveryItemList") DeliveryItemFormWrapper deliveryItemFormWrapper, 
 											@RequestParam("deliveryCheck") List<String> check, 											
 											SessionStatus sessionStatus,
-											Model model) {
+											Model model,  HttpServletResponse response) {
 		CompanyDto company = companyService.getCompany();
-		deliverySlipService.createDeliverySlip(deliveryForm, deliveryItemFormWrapper, company, check);
+		deliverySlipService.createDeliverySlip(deliveryForm, deliveryItemFormWrapper, company, check, response);
 		sessionStatus.setComplete();
 		return "delivery/create/complete-create-delivery-slip";
 	}
@@ -442,9 +443,9 @@ public class DeliverySystemController {
 	}
 	//納品履歴-表示-ダウンロード
 	@GetMapping("/delivery-history-download")
-	public String deliveryHistoryDownload(@ModelAttribute DeliverySlipIdWrapper idWrapper, Model model) {
-		deliverySlipService.downloadDocument(idWrapper.getId());	
-		return "delivery/history/complete-download";
+	public void deliveryHistoryDownload(@ModelAttribute DeliverySlipIdWrapper idWrapper, Model model, HttpServletResponse response) {
+		deliverySlipService.downloadDocument(idWrapper.getId(), response);	
+		
 	}
 	
 }

@@ -1,6 +1,5 @@
 package com.example.demo.service;
 
-import java.io.FileOutputStream;
 import java.io.IOException;
 import java.time.LocalDate;
 import java.time.ZoneId;
@@ -11,6 +10,9 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.TreeMap;
+
+import jakarta.servlet.ServletOutputStream;
+import jakarta.servlet.http.HttpServletResponse;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -52,7 +54,7 @@ public class DeliverySlipServiceImpl implements DeliverySlipService {
 	DeliveryDashboardDAOImpl deliveryDashboardDAO;
 
 	@Override
-	public void createDeliverySlip(DeliveryForm deliveryForm, DeliveryItemFormWrapper deliveryItemFormWrapper, CompanyDto company, List<String> check) {
+	public void createDeliverySlip(DeliveryForm deliveryForm, DeliveryItemFormWrapper deliveryItemFormWrapper, CompanyDto company, List<String> check, HttpServletResponse response) {
 		Integer latestId = deliverySlipRepository.getLatestId();
 		if (latestId == null) {
 			latestId = 0;
@@ -74,16 +76,20 @@ public class DeliverySlipServiceImpl implements DeliverySlipService {
 		
 		deliverySlipRepository.updateDeliveryRecord(document, deliveryForm, latestId, itemList);
 		deliverySlipRepository.saveDocument(document);
-		if (check.contains("download")) {
-			String path = System.getProperty("user.home")+"\\Downloads\\";
-			System.out.println(path);
-			try(FileOutputStream fos = new FileOutputStream(path + "DS" + latestIdStr +".pdf")) {
-				fos.write(document);
-				System.out.println("ok");
-			} catch (IOException e) {
-				e.printStackTrace();
-			}			
-		}
+		 if (check.contains("download")) {
+	        try {
+	            response.setContentType("application/pdf");
+	            response.setHeader("Content-Disposition", "attachment; filename=\"DS" + latestIdStr + ".pdf\"");
+	            response.setContentLength(document.length);
+
+	            ServletOutputStream os = response.getOutputStream();
+	            os.write(document);
+	            os.flush();
+	        } catch (IOException e) {
+	            e.printStackTrace();
+	        }
+	        return; // ここで return しないと後続処理でエラーになる可能性あり
+	    }
 		if (check.contains("reflectToStock")) {
 			for (DeliveryItemDto list : deliveryItemFormWrapper.getDeliveryItemList()) {
 				StockFormEntity sfe = new StockFormEntity();
@@ -121,15 +127,21 @@ public class DeliverySlipServiceImpl implements DeliverySlipService {
 		return document;
 	}
 	@Override
-	public void downloadDocument(Integer id) {
+	public void downloadDocument(Integer id,  HttpServletResponse response) {
         String latestIdStr = String.format("%06d", id);
 		byte[] document = deliverySlipRepository.getDeliverySlipById(id);
 		String path = System.getProperty("user.home")+"\\Downloads\\";
-		try(FileOutputStream fos = new FileOutputStream(path + "DS" + latestIdStr +".pdf")) {
-			fos.write(document);
-		} catch (IOException e) {
-			e.printStackTrace();
-		}		
+		  try {
+		        response.setContentType("application/pdf");
+		        response.setHeader("Content-Disposition", "attachment; filename=\"DS" + latestIdStr + ".pdf\"");
+		        response.setContentLength(document.length);
+		        ServletOutputStream os = response.getOutputStream();
+		        os.write(document);
+		        os.flush();
+		        response.flushBuffer();
+		    } catch (IOException e) {
+		        e.printStackTrace();
+		    }       
 	}
 
 	@Override
