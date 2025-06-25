@@ -54,7 +54,7 @@ public class DeliverySlipServiceImpl implements DeliverySlipService {
 	DeliveryDashboardDAOImpl deliveryDashboardDAO;
 
 	@Override
-	public void createDeliverySlip(DeliveryForm deliveryForm, DeliveryItemFormWrapper deliveryItemFormWrapper, CompanyDto company, List<String> check, HttpServletResponse response) {
+	public void createDeliverySlip(DeliveryForm deliveryForm, DeliveryItemFormWrapper deliveryItemFormWrapper, CompanyDto company, List<String> check) {
 		Integer latestId = deliverySlipRepository.getLatestId();
 		if (latestId == null) {
 			latestId = 0;
@@ -77,20 +77,19 @@ public class DeliverySlipServiceImpl implements DeliverySlipService {
 		deliverySlipRepository.updateDeliveryRecord(document, deliveryForm, latestId, itemList);
 		deliverySlipRepository.saveDocument(document);
 		if (check != null) {
-			if (check.contains("download")) {
-				try {
-					response.setContentType("application/pdf");
-					response.setHeader("Content-Disposition", "attachment; filename=\"DS" + latestIdStr + ".pdf\"");
-					response.setContentLength(document.length);
-					
-					ServletOutputStream os = response.getOutputStream();
-					os.write(document);
-					os.flush();
-				} catch (IOException e) {
-					e.printStackTrace();
-				}
-				return; 
-			}
+//			if (check.contains("download")) {
+//				try {
+//					response.setContentType("application/pdf");
+//					response.setHeader("Content-Disposition", "attachment; filename=\"DS" + latestIdStr + ".pdf\"");
+//					response.setContentLength(document.length);
+//					
+//					ServletOutputStream os = response.getOutputStream();
+//					os.write(document);
+//					os.flush();
+//				} catch (IOException e) {
+//					e.printStackTrace();
+//				}
+//			}
 			if (check.contains("reflectToStock")) {
 				for (DeliveryItemDto list : deliveryItemFormWrapper.getDeliveryItemList()) {
 					StockFormEntity sfe = new StockFormEntity();

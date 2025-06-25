@@ -23,9 +23,27 @@
 	</div>
     <div class="complete-box" style="margin-top: 15rem;">
       <p class="complete-message">登録が完了しました。</p>
+	  <input type="hidden" id="deliverySlipId" th:value="${deliverySlipId}">
+	  <input type="hidden" id="check" th:value="${check}">
       <a th:href="@{create-delivery-slip-step1}" class="btn btn-secondary form-btn">戻る</a>
+	  <a id="downloadLink" th:href="@{'/download-delivery-slip-preview?id=' + ${deliverySlipId}}" target="_blank" style="display: none;">Download</a>
+
     </div>
   </div>
-
+  <script th:inline="javascript">
+    /*<![CDATA[*/
+  //  const slipId = [[${deliverySlipId} != null ? deliverySlipId : 0]];
+  document.addEventListener("DOMContentLoaded", function () {
+  	const slipId = Number(document.getElementById("deliverySlipId").value);
+      const checkList = document.getElementById("check").value;
+	  const downloadChecked = checkList
+	          .replace(/^\[|\]$/g, '').split(',').map(s => s.trim()); 
+	  console.log(slipId);
+      if (downloadChecked && slipId > 0) {
+ 		   document.getElementById("downloadLink").click();
+      } 
+    });
+    /*]]>*/
+  </script>
 </body>
 </html>

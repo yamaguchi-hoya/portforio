@@ -13,7 +13,7 @@ import com.example.demo.form.DeliveryItemForm;
 import com.example.demo.form.DeliveryItemFormWrapper;
 
 public interface DeliverySlipService {
-	public void createDeliverySlip(DeliveryForm deliveryForm, DeliveryItemFormWrapper deliveryItemFormWrapper, CompanyDto company, List<String> check, HttpServletResponse response);
+	public void createDeliverySlip(DeliveryForm deliveryForm, DeliveryItemFormWrapper deliveryItemFormWrapper, CompanyDto company, List<String> check);
 	public byte[] previewDeliverySlip(DeliveryForm deliveryForm, DeliveryItemFormWrapper list, CompanyDto company);
 	public byte[] viewDeliveryHistory(Integer id);
 	public void downloadDocument(Integer id,  HttpServletResponse response);

@@ -1,10 +1,12 @@
 package com.example.demo.controller;
 
+import java.io.IOException;
 import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
 
+import jakarta.servlet.ServletOutputStream;
 import jakarta.servlet.http.HttpServletResponse;
 import jakarta.servlet.http.HttpSession;
 
@@ -25,6 +27,7 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.bind.annotation.SessionAttributes;
 import org.springframework.web.bind.support.SessionStatus;
+import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
 import com.example.demo.dao.DeliveryHistoryDAOImpl;
 import com.example.demo.dto.CategoryDto;
@@ -40,6 +43,7 @@ import com.example.demo.form.DeliveryHistoryForm;
 import com.example.demo.form.DeliveryItemForm;
 import com.example.demo.form.DeliveryItemFormWrapper;
 import com.example.demo.form.DeliverySlipIdWrapper;
+import com.example.demo.repository.DeliverySlipRepository;
 import com.example.demo.service.CompanyService;
 import com.example.demo.service.DeliverySlipService;
 import com.example.demo.service.RegistCategoryService;
@@ -59,6 +63,7 @@ public class DeliverySystemController {
 	private final RegistSizeService registSizeService;
 	private final StockRecordService stockRecordService;
 	private final CompanyService companyService;
+	private final DeliverySlipRepository deliverySlipRepository;
 	
 	@Autowired
 	DeliveryHistoryDAOImpl deliveryHistoryDAO;
@@ -331,19 +336,70 @@ public class DeliverySystemController {
 		model.addAttribute("deliveryList", deliveryItemFormWrapper.getDeliveryItemList());
 		return "delivery/create/preview-create-delivery-slip";
 	}
-	//納品書作成⑤
+//	//納品書作成⑤
+//	@PostMapping("/confirm-create-delivery-slip-next")
+//	public String confirmCreateDeliverySlipNext(@ModelAttribute DeliveryItemForm deliveryItemForm,
+//											@ModelAttribute("deliveryForm") DeliveryForm deliveryForm,
+//											@ModelAttribute("deliveryItemList") DeliveryItemFormWrapper deliveryItemFormWrapper, 
+//											@RequestParam(value = "deliveryCheck", required = false) List<String> check, 											
+//											SessionStatus sessionStatus,
+//											Model model,  HttpServletResponse response) {
+//		CompanyDto company = companyService.getCompany();
+//		deliverySlipService.createDeliverySlip(deliveryForm, deliveryItemFormWrapper, company, check, response);
+//		sessionStatus.setComplete();
+//		return "delivery/create/complete-create-delivery-slip";
+//	}
 	@PostMapping("/confirm-create-delivery-slip-next")
-	public String confirmCreateDeliverySlipNext(@ModelAttribute DeliveryItemForm deliveryItemForm,
-											@ModelAttribute("deliveryForm") DeliveryForm deliveryForm,
-											@ModelAttribute("deliveryItemList") DeliveryItemFormWrapper deliveryItemFormWrapper, 
-											@RequestParam(value = "deliveryCheck", required = false) List<String> check, 											
-											SessionStatus sessionStatus,
-											Model model,  HttpServletResponse response) {
-		CompanyDto company = companyService.getCompany();
-		deliverySlipService.createDeliverySlip(deliveryForm, deliveryItemFormWrapper, company, check, response);
-		sessionStatus.setComplete();
-		return "delivery/create/complete-create-delivery-slip";
+	public String confirmCreateDeliverySlipNext(
+	        @ModelAttribute DeliveryItemForm deliveryItemForm,
+	        @ModelAttribute("deliveryForm") DeliveryForm deliveryForm,
+	        @ModelAttribute("deliveryItemList") DeliveryItemFormWrapper deliveryItemFormWrapper,
+	        @RequestParam(value = "deliveryCheck", required = false) List<String> check,
+	        SessionStatus sessionStatus,
+	        RedirectAttributes redirectAttributes) {
+
+	    CompanyDto company = companyService.getCompany();
+
+	    // チェックされたオプションに基づいて処理
+	    deliverySlipService.createDeliverySlip(
+	        deliveryForm, deliveryItemFormWrapper, company, check
+	    );
+	    Integer latestSlipId = deliverySlipRepository.getLatestId();
+	    System.out.println("latestSlipId : " + latestSlipId);
+	    redirectAttributes.addAttribute("id", latestSlipId);
+	    redirectAttributes.addAttribute("check", check);
+
+	    // セッション終了
+	    sessionStatus.setComplete();
+
+	    return "redirect:/complete-create-delivery-slip?id=" + latestSlipId;
 	}
+	@GetMapping("/complete-create-delivery-slip")
+	public String completeCreateDeliverySlip(@RequestParam("id") Integer id, Model model,	        
+											 @RequestParam(value = "deliveryCheck", required = false) List<String> check) {
+		System.out.println("id : " + id);
+	    model.addAttribute("deliverySlipId", id);
+	    model.addAttribute("check", check);
+	    return "delivery/create/complete-create-delivery-slip";
+	}
+	
+	@GetMapping("/download-delivery-slip-preview")
+	public void downloadDeliverySlipPreview(@RequestParam("id") Integer id, HttpServletResponse response) {
+	    byte[] document = deliverySlipRepository.getDeliverySlipById(id);
+
+	    response.setContentType("application/pdf");
+	    response.setHeader("Content-Disposition", "attachment; filename=DS" + String.format("%06d", id) + ".pdf");
+
+	    try (ServletOutputStream os = response.getOutputStream()) {
+	        os.write(document);
+	        os.flush();
+	    } catch (IOException e) {
+	        e.printStackTrace();
+	        throw new RuntimeException("PDFの出力に失敗しました", e);
+	    }
+	}
+	
+	
 //	セッションスコープ破棄
 	@GetMapping("/reset-delivery-item-list")
 	public String resetDeliveryItemList(SessionStatus sessionStatus) {
