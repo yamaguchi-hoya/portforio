@@ -76,36 +76,38 @@ public class DeliverySlipServiceImpl implements DeliverySlipService {
 		
 		deliverySlipRepository.updateDeliveryRecord(document, deliveryForm, latestId, itemList);
 		deliverySlipRepository.saveDocument(document);
-		 if (check.contains("download")) {
-	        try {
-	            response.setContentType("application/pdf");
-	            response.setHeader("Content-Disposition", "attachment; filename=\"DS" + latestIdStr + ".pdf\"");
-	            response.setContentLength(document.length);
-
-	            ServletOutputStream os = response.getOutputStream();
-	            os.write(document);
-	            os.flush();
-	        } catch (IOException e) {
-	            e.printStackTrace();
-	        }
-	        return; // ここで return しないと後続処理でエラーになる可能性あり
-	    }
-		if (check.contains("reflectToStock")) {
-			for (DeliveryItemDto list : deliveryItemFormWrapper.getDeliveryItemList()) {
-				StockFormEntity sfe = new StockFormEntity();
-				int stockId = stockRecordRepository.serchStockId(list.getItemId(),list.getSizeId());
-				int curentAmount = stockRecordRepository.currentAmount(stockId);
-				int updateAmount = curentAmount - list.getAmount();
-				sfe.setCategoryId(list.getCategoryId());
-				sfe.setItemId(list.getItemId());
-				sfe.setSizeId(list.getSizeId());
-				sfe.setAmount(list.getAmount());
-				sfe.setPerson(deliveryForm.getPerson());
-				sfe.setPrice(list.getUnitPrice());
-				sfe.setComment("納品書No.DS" + latestIdStr);
-				sfe.setRegisterDate(deliveryForm.getDeliveryDate());
-				stockRecordRepository.wrightRecordShipping(sfe,stockId);
-				stockRecordRepository.stockShipping(updateAmount, stockId);
+		if (check != null) {
+			if (check.contains("download")) {
+				try {
+					response.setContentType("application/pdf");
+					response.setHeader("Content-Disposition", "attachment; filename=\"DS" + latestIdStr + ".pdf\"");
+					response.setContentLength(document.length);
+					
+					ServletOutputStream os = response.getOutputStream();
+					os.write(document);
+					os.flush();
+				} catch (IOException e) {
+					e.printStackTrace();
+				}
+				return; 
+			}
+			if (check.contains("reflectToStock")) {
+				for (DeliveryItemDto list : deliveryItemFormWrapper.getDeliveryItemList()) {
+					StockFormEntity sfe = new StockFormEntity();
+					int stockId = stockRecordRepository.serchStockId(list.getItemId(),list.getSizeId());
+					int curentAmount = stockRecordRepository.currentAmount(stockId);
+					int updateAmount = curentAmount - list.getAmount();
+					sfe.setCategoryId(list.getCategoryId());
+					sfe.setItemId(list.getItemId());
+					sfe.setSizeId(list.getSizeId());
+					sfe.setAmount(list.getAmount());
+					sfe.setPerson(deliveryForm.getPerson());
+					sfe.setPrice(list.getUnitPrice());
+					sfe.setComment("納品書No.DS" + latestIdStr);
+					sfe.setRegisterDate(deliveryForm.getDeliveryDate());
+					stockRecordRepository.wrightRecordShipping(sfe,stockId);
+					stockRecordRepository.stockShipping(updateAmount, stockId);
+				}
 			}
 		}
 	}

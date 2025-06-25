@@ -336,7 +336,7 @@ public class DeliverySystemController {
 	public String confirmCreateDeliverySlipNext(@ModelAttribute DeliveryItemForm deliveryItemForm,
 											@ModelAttribute("deliveryForm") DeliveryForm deliveryForm,
 											@ModelAttribute("deliveryItemList") DeliveryItemFormWrapper deliveryItemFormWrapper, 
-											@RequestParam("deliveryCheck") List<String> check, 											
+											@RequestParam(value = "deliveryCheck", required = false) List<String> check, 											
 											SessionStatus sessionStatus,
 											Model model,  HttpServletResponse response) {
 		CompanyDto company = companyService.getCompany();
