@@ -14,18 +14,20 @@ java 17
 Spring Boot 3.5.0  
 html  
 css  
+BootStrap
 javascript
 ## 機能一覧  
 #### ・在庫管理  
-出荷登録 ![Image](https://github.com/user-attachments/assets/9fb3c545-c44b-4e12-b351-d730df45d4fa)  | 入荷登録 ![Image](https://github.com/user-attachments/assets/f5e9662d-4010-47a7-b976-f5268ca3ad53)
+在庫管理　ダッシュボード ![Image](https://github.com/user-attachments/assets/8c77cd57-04a6-43c7-a0c6-bb7c80db6051)  | 出荷登録![Image](https://github.com/user-attachments/assets/d18e99c3-7078-4d2c-be08-a7793710705a)
 :---: | :---:
-カテゴリ管理 ![Image](https://github.com/user-attachments/assets/9f59a674-68f2-4382-b1d5-f47b96192bf7)　| 商品管理　![Image](https://github.com/user-attachments/assets/1aa1126a-a000-4528-8fbc-1d937310b66f)
-在庫一覧　![Image](https://github.com/user-attachments/assets/f0ab1e70-5c9b-4f9b-aff3-39bf9e8d24a3) | 出納履歴　![Image](https://github.com/user-attachments/assets/5f59d839-66a9-4641-b567-926dcae1c944)
+入荷登録![Image](https://github.com/user-attachments/assets/cc22c800-6b56-4c1f-abb5-b78940567d06)　| カテゴリー登録　![Image](https://github.com/user-attachments/assets/4925e0c4-aa02-4ce9-990f-92ebb491d19b)
+商品登録　![Image](https://github.com/user-attachments/assets/7870fc72-bbda-49ad-97f2-a4c7657b503b) | 在庫一覧　![Image](https://github.com/user-attachments/assets/64df80ef-238a-4cac-a4a1-e27c839269bd)
+出納履歴　![Image](https://github.com/user-attachments/assets/938f32d6-5494-47db-b5cb-457b47c20ad1) |
 #### ・納品書管理  
-納品書作成 ![Image](https://github.com/user-attachments/assets/0063004a-9c05-4baf-951d-12cf21d2d821) | 納品履歴 ![Image](https://github.com/user-attachments/assets/9299736e-bb52-4ed0-96ad-7273b7f1c90b)
+納品書　ダッシュボード![Image](https://github.com/user-attachments/assets/1221e4bc-3c77-4a14-8c01-7b0a4c83e0d2) | 納品書作成![Image](https://github.com/user-attachments/assets/374e2b6d-4899-412b-b7ae-3baa15a02904)
 :---: | :---:
-会社情報登録 ![Image](https://github.com/user-attachments/assets/75733083-4f81-4855-972d-8c6dcff7e1b2)
+納品履歴 ![Image](https://github.com/user-attachments/assets/4b04381d-31b9-4d30-9f4d-060c577fa80b) | 会社情報登録 ![Image](https://github.com/user-attachments/assets/817f9862-d896-4b22-b718-6015bfe75aa4)
 ## ER図
 ![Image](https://github.com/user-attachments/assets/1f363df3-e349-4398-9f33-49b3dfdd6683)
 ## 画面遷移図
-![Image](https://github.com/user-attachments/assets/fe6018e3-8bfa-4aa2-b426-237ded477fd7)
+![Image](https://github.com/user-attachments/assets/53687259-37a4-42f4-83bf-f789bdd05660)
