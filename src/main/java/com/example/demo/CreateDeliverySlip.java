@@ -1,7 +1,7 @@
 package com.example.demo;
 import java.io.ByteArrayOutputStream;
-import java.io.File;
 import java.io.IOException;
+import java.io.InputStream;
 
 import org.apache.pdfbox.pdmodel.PDDocument;
 import org.apache.pdfbox.pdmodel.PDPage;
@@ -34,8 +34,11 @@ public class CreateDeliverySlip {
             document.addPage(page);
 
             PDPageContentStream contentStream = new PDPageContentStream(document, page);
-            PDFont notoSansBold = PDType0Font.load(document,  new File("src\\main\\resources\\fonts\\NotoSansJP-SemiBold.ttf"));
-            PDFont notoSansNormal = PDType0Font.load(document,  new File("src\\main\\resources\\fonts\\NotoSansJP-Medium.ttf"));
+            InputStream boldStream = CreateDeliverySlip.class.getResourceAsStream("/fonts/NotoSansJP-SemiBold.ttf");
+            InputStream normalStream = CreateDeliverySlip.class.getResourceAsStream("/fonts/NotoSansJP-Medium.ttf");
+
+            PDFont notoSansBold = PDType0Font.load(document, boldStream);
+            PDFont notoSansNormal = PDType0Font.load(document, normalStream);
             
             float frameX = 65;
             float frameY = 54;
