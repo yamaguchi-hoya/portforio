@@ -366,8 +366,9 @@ public class DeliverySystemController {
 	    );
 	    Integer latestSlipId = deliverySlipRepository.getLatestId();
 	    System.out.println("latestSlipId : " + latestSlipId);
+	    System.out.println("check1 : " + check);
 	    redirectAttributes.addAttribute("id", latestSlipId);
-	    redirectAttributes.addAttribute("check", check);
+	    redirectAttributes.addAttribute("deliveryCheck", check);
 
 	    // セッション終了
 	    sessionStatus.setComplete();
@@ -378,8 +379,9 @@ public class DeliverySystemController {
 	public String completeCreateDeliverySlip(@RequestParam("id") Integer id, Model model,	        
 											 @RequestParam(value = "deliveryCheck", required = false) List<String> check) {
 		System.out.println("id : " + id);
+		System.out.println("check : " + check);
 	    model.addAttribute("deliverySlipId", id);
-	    model.addAttribute("check", check);
+	    model.addAttribute("deliveryCheck", check);
 	    return "delivery/create/complete-create-delivery-slip";
 	}
 	
